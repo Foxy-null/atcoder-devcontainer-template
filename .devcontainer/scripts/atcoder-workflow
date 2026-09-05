@@ -1,0 +1,215 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+die() {
+    printf '%s\n' "$*" >&2
+    return 1
+}
+
+contest_id_from_input() {
+    local input="$1"
+    local url_pattern='^https://atcoder\.jp/contests/([A-Za-z0-9][A-Za-z0-9_-]*)(/?|/tasks/[A-Za-z0-9][A-Za-z0-9_-]*/?)([?#].*)?$'
+
+    if [[ "${input}" =~ ${url_pattern} ]]; then
+        printf '%s\n' "${BASH_REMATCH[1]}"
+    elif [[ "${input}" =~ ^[A-Za-z0-9][A-Za-z0-9_-]*$ ]]; then
+        printf '%s\n' "${input}"
+    else
+        die "Enter a contest ID or an AtCoder contest/task URL: ${input}"
+    fi
+}
+
+category_for() {
+    local contest_id="${1,,}"
+
+    if [[ "${contest_id}" =~ ^abc[0-9]+$ ]]; then
+        printf 'ABC\n'
+    elif [[ "${contest_id}" =~ ^arc[0-9]+$ ]]; then
+        printf 'ARC\n'
+    elif [[ "${contest_id}" =~ ^agc[0-9]+$ ]]; then
+        printf 'AGC\n'
+    elif [[ "${contest_id}" =~ ^ahc[0-9]+$ ]]; then
+        printf 'AHC\n'
+    elif [[ "${contest_id}" =~ ^adt($|_|[0-9]) ]]; then
+        printf 'ADT\n'
+    elif [[ "${contest_id}" =~ ^past($|_|-|[0-9]) ]]; then
+        printf 'PAST\n'
+    elif [[ "${contest_id}" =~ ^joi($|_|-|[0-9]) ]]; then
+        printf 'JOI\n'
+    elif [[ "${contest_id}" =~ ^awc($|_|-|[0-9]) ]]; then
+        printf 'AWC\n'
+    elif [[ "${contest_id}" =~ ^atc[0-9]+$ ]] || \
+        [[ "${contest_id}" =~ ^aalc[0-9]+$ ]] || \
+        [[ "${contest_id}" =~ ^ahf[0-9]+($|-) ]]; then
+        printf 'TRAINING\n'
+    else
+        case "${contest_id}" in
+            practice|apg4b|apg4bpython|abs|typical90|practice2|math-and-algorithm|tessoku-book|dp|tdpc|ndpc|intro-heuristics|fps-24)
+                printf 'TRAINING\n'
+                ;;
+            *)
+                printf 'OTHER\n'
+                ;;
+        esac
+    fi
+}
+
+download_contest() {
+    local input="$1"
+    local workspace_root="$2"
+    local contest_id category category_dir existing_dir manifest
+
+    contest_id="$(contest_id_from_input "${input}")"
+    category="$(category_for "${contest_id}")"
+    category_dir="${workspace_root}/atcoder/${category}"
+
+    mkdir -p "${category_dir}"
+    for existing_dir in "${category_dir}"/*; do
+        if [[ -d "${existing_dir}" ]] && \
+            [[ "$(basename "${existing_dir}")" == "${contest_id}" || \
+                "${existing_dir,,}" == "${category_dir,,}/${contest_id,,}" ]]; then
+            contest_id="$(basename "${existing_dir}")"
+            break
+        fi
+    done
+    manifest="${category_dir}/${contest_id}/contest.acc.json"
+
+    (
+        cd "${category_dir}"
+        acc new "${contest_id}" --force
+    )
+
+    [[ -f "${manifest}" ]] || die "Download finished without a manifest: ${manifest}"
+    if command -v code >/dev/null; then
+        code --reuse-window "${manifest}"
+    fi
+}
+
+validate_problem_url() {
+    local url="$1"
+    local contest_id="$2"
+    local pattern="^https://atcoder\\.jp/contests/${contest_id}/tasks/[A-Za-z0-9][A-Za-z0-9_-]*/?$"
+    [[ "${url}" =~ ${pattern} ]]
+}
+
+submit_solution() {
+    local solution="$1"
+    local task_dir contest_dir task_id contest_id manifest manifest_contest url custom_id
+
+    [[ -f "${solution}" ]] || die "Solution file not found: ${solution}"
+    task_dir="$(cd "$(dirname "${solution}")" && pwd -P)"
+    contest_dir="$(dirname "${task_dir}")"
+    task_id="$(basename "${task_dir}")"
+    contest_id="$(basename "${contest_dir}")"
+    manifest="${contest_dir}/contest.acc.json"
+    url=""
+
+    if [[ -f "${manifest}" ]]; then
+        manifest_contest="$(jq -r '.contest.id // empty' "${manifest}")"
+        [[ "${manifest_contest}" == "${contest_id}" ]] || \
+            die "Manifest contest '${manifest_contest}' does not match directory '${contest_id}'."
+        url="$(jq -r --arg path "${task_id}" \
+            '.tasks[] | select(.directory.path == $path) | .url' "${manifest}" | head -n 1)"
+        if [[ -n "${url}" ]] && ! validate_problem_url "${url}" "${contest_id}"; then
+            die "Manifest task URL does not match contest '${contest_id}': ${url}"
+        fi
+    fi
+
+    if [[ -z "${url}" && -f "${task_dir}/url.txt" ]]; then
+        url="$(head -n 1 "${task_dir}/url.txt")"
+        validate_problem_url "${url}" "${contest_id}" || \
+            die "url.txt does not match contest '${contest_id}': ${url}"
+    fi
+
+    if [[ -z "${url}" ]]; then
+        url="https://atcoder.jp/contests/${contest_id}/tasks/${contest_id}_${task_id}"
+    fi
+
+    if oj submit --yes "${url}" "${solution}"; then
+        return 0
+    fi
+
+    printf 'Problem ID could not be determined automatically.\n' >&2
+    read -r -p 'Problem ID: ' custom_id
+    [[ "${custom_id}" =~ ^[A-Za-z0-9][A-Za-z0-9_-]*$ ]] || die 'Invalid problem ID.'
+    oj submit --yes \
+        "https://atcoder.jp/contests/${contest_id}/tasks/${custom_id}" \
+        "${solution}"
+}
+
+self_test() {
+    local actual
+
+    assert_equal() {
+        local expected="$1"
+        local actual_value="$2"
+        [[ "${expected}" == "${actual_value}" ]] || \
+            die "Expected '${expected}', got '${actual_value}'."
+    }
+
+    assert_equal abc470 "$(contest_id_from_input abc470)"
+    assert_equal abc470 "$(contest_id_from_input 'https://atcoder.jp/contests/abc470?lang=ja')"
+    assert_equal abc470 "$(contest_id_from_input 'https://atcoder.jp/contests/abc470/tasks/abc470_a')"
+    if contest_id_from_input 'https://evil.example/contests/abc470' >/dev/null 2>&1; then
+        die 'Accepted a non-AtCoder URL.'
+    fi
+    if contest_id_from_input 'abc470;echo-bad' >/dev/null 2>&1; then
+        die 'Accepted an unsafe contest ID.'
+    fi
+
+    while read -r actual expected; do
+        assert_equal "${expected}" "$(category_for "${actual}")"
+    done <<'CASES'
+abc470 ABC
+arc224 ARC
+agc071 AGC
+ahc050 AHC
+adt_all_20250821_1 ADT
+past202005-open PAST
+joi2026yo2 JOI
+awc0003 AWC
+APG4b TRAINING
+APG4bPython TRAINING
+typical90 TRAINING
+practice2 TRAINING
+math-and-algorithm TRAINING
+tessoku-book TRAINING
+atc001 TRAINING
+dp TRAINING
+tdpc TRAINING
+ndpc TRAINING
+intro-heuristics TRAINING
+fps-24 TRAINING
+aalc001 TRAINING
+ahf1-S2wpmcNX TRAINING
+chokudai_S002 OTHER
+CASES
+
+    validate_problem_url \
+        'https://atcoder.jp/contests/abc470/tasks/abc470_a' abc470 || \
+        die 'Rejected a valid problem URL.'
+    if validate_problem_url \
+        'https://atcoder.jp/contests/abc457/tasks/abc457_a' abc458; then
+        die 'Accepted a task URL for the wrong contest.'
+    fi
+
+    printf 'AtCoder workflow checks passed.\n'
+}
+
+case "${1:-}" in
+    download)
+        [[ $# -eq 3 ]] || die 'Usage: atcoder-workflow download INPUT WORKSPACE_ROOT'
+        download_contest "$2" "$3"
+        ;;
+    submit)
+        [[ $# -eq 2 ]] || die 'Usage: atcoder-workflow submit SOLUTION'
+        submit_solution "$2"
+        ;;
+    self-test)
+        [[ $# -eq 1 ]] || die 'Usage: atcoder-workflow self-test'
+        self_test
+        ;;
+    *)
+        die 'Usage: atcoder-workflow {download INPUT WORKSPACE_ROOT|submit SOLUTION|self-test}'
+        ;;
+esac

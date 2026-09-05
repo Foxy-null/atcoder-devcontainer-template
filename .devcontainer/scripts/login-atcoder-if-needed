@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+config_dir="$(acc config-dir)"
+readonly config_dir
+readonly acc_session="${config_dir}/session.json"
+readonly oj_python="${PIPX_HOME:-/opt/pipx}/venvs/online-judge-tools/bin/python"
+oj_cookie="$("${oj_python}" -c \
+    'from onlinejudge_command import utils; print(utils.default_cookie_path)')"
+readonly oj_cookie
+
+if [[ -f "${acc_session}" && -f "${oj_cookie}" ]]; then
+    exit 0
+fi
+
+printf 'AtCoder authentication is not configured. Paste REVEL_SESSION when prompted.\n'
+if ! aclogin \
+    --oj-cookie-path "${oj_cookie}" \
+    --acc-cookie-path "${acc_session}"; then
+    printf 'Authentication was skipped. Run login-atcoder-if-needed later.\n' >&2
+    exit 0
+fi
+
+if [[ ! -f "${acc_session}" || ! -f "${oj_cookie}" ]]; then
+    printf 'Authentication is incomplete. Run login-atcoder-if-needed later.\n' >&2
+fi

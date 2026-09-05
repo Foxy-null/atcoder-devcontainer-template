@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly expected_acc_version=2.2.0
+readonly expected_oj_version=11.5.1
+readonly expected_aclogin_version=0.2.1
+readonly expected_ac_library_version=v1.6
+readonly repository_config_dir="${ATCODER_REPOSITORY_CONFIG_DIR:-/workspace/config}"
+readonly repository_template="${repository_config_dir}/atcoder-cli/cpp/main.cpp"
+readonly ac_library_header=/usr/local/include/atcoder/all
+readonly ac_library_version_file=/usr/local/share/ac-library/VERSION
+readonly oj_python="${PIPX_HOME:-/opt/pipx}/venvs/online-judge-tools/bin/python"
+readonly aclogin_python="${PIPX_HOME:-/opt/pipx}/venvs/aclogin/bin/python"
+
+for command_name in acc oj aclogin atcoder-workflow g++ make git jq node; do
+    command -v "${command_name}" >/dev/null
+done
+
+config_dir="$(acc config-dir)"
+readonly config_dir
+readonly configured_template="${config_dir}/cpp/main.cpp"
+
+if [[ ! -L "${configured_template}" ]] || \
+    [[ "$(readlink "${configured_template}")" != "${repository_template}" ]]; then
+    printf 'AtCoder template is not linked to the repository: %s\n' \
+        "${configured_template}" >&2
+    exit 1
+fi
+
+if [[ ! -r "${ac_library_header}" ]]; then
+    printf 'AtCoder Library is missing: %s\n' "${ac_library_header}" >&2
+    exit 1
+fi
+
+actual_ac_library_version="$(<"${ac_library_version_file}")"
+if [[ "${actual_ac_library_version}" != "${expected_ac_library_version}" ]]; then
+    printf 'Unexpected AtCoder Library version: expected %s, got %s\n' \
+        "${expected_ac_library_version}" "${actual_ac_library_version}" >&2
+    exit 1
+fi
+
+actual_acc_version="$(acc --version)"
+actual_oj_version="$("${oj_python}" -c \
+    'from importlib.metadata import version; print(version("online-judge-tools"))')"
+actual_aclogin_version="$("${aclogin_python}" -c \
+    'from importlib.metadata import version; print(version("aclogin"))')"
+"${oj_python}" -c 'import setuptools' >/dev/null
+
+if [[ "${actual_acc_version}" != "${expected_acc_version}" ]]; then
+    printf 'Unexpected atcoder-cli version: expected %s, got %s\n' \
+        "${expected_acc_version}" "${actual_acc_version}" >&2
+    exit 1
+fi
+
+if [[ "${actual_oj_version}" != "${expected_oj_version}" ]]; then
+    printf 'Unexpected online-judge-tools version: expected %s, got %s\n' \
+        "${expected_oj_version}" "${actual_oj_version}" >&2
+    exit 1
+fi
+
+if [[ "${actual_aclogin_version}" != "${expected_aclogin_version}" ]]; then
+    printf 'Unexpected aclogin version: expected %s, got %s\n' \
+        "${expected_aclogin_version}" "${actual_aclogin_version}" >&2
+    exit 1
+fi
+
+atcoder-workflow self-test
+
+build_dir="$(mktemp -d)"
+readonly build_dir
+trap 'rm -rf -- "${build_dir}"' EXIT
+
+g++ -std=gnu++23 -O2 -Wall -Wextra \
+    "${configured_template}" -o "${build_dir}/main"
+
+printf 'AtCoder toolchain OK: acc %s, oj %s, aclogin %s, ACL %s, GCC %s\n' \
+    "${actual_acc_version}" \
+    "${actual_oj_version}" \
+    "${actual_aclogin_version}" \
+    "${actual_ac_library_version}" \
+    "$(g++ -dumpfullversion -dumpversion)"

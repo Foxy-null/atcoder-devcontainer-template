@@ -1,0 +1,98 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "C++ Debug (GDB)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}/a.out",
+      "args": [],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build for debug",
+      "miDebuggerPath": "/usr/bin/gdb"
+    },
+    {
+      "name": "C++ Debug (Sample 1)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}/a.out",
+      "args": [
+        "<",
+        "${fileDirname}/test/sample-1.in"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build for debug",
+      "miDebuggerPath": "/usr/bin/gdb"
+    },
+    {
+      "name": "C++ Debug (Sample 2)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}/a.out",
+      "args": [
+        "<",
+        "${fileDirname}/test/sample-2.in"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build for debug",
+      "miDebuggerPath": "/usr/bin/gdb"
+    },
+    {
+      "name": "C++ Debug (Sample 3)",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${fileDirname}/a.out",
+      "args": [
+        "<",
+        "${fileDirname}/test/sample-3.in"
+      ],
+      "stopAtEntry": false,
+      "cwd": "${fileDirname}",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ],
+      "preLaunchTask": "build for debug",
+      "miDebuggerPath": "/usr/bin/gdb"
+    }
+  ]
+}

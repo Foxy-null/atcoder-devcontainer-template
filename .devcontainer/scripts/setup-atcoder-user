@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+readonly source_dir="${ATCODER_CONFIG_SOURCE_DIR:-/usr/local/share/atcoder-cli}"
+readonly repository_config_dir="${ATCODER_REPOSITORY_CONFIG_DIR:-/workspace/config}"
+
+config_dir="$(acc config-dir)"
+readonly config_dir
+readonly template_dir="${config_dir}/cpp"
+readonly oj_python="${PIPX_HOME:-/opt/pipx}/venvs/online-judge-tools/bin/python"
+oj_cookie="$("${oj_python}" -c \
+    'from onlinejudge_command import utils; print(utils.default_cookie_path)')"
+readonly oj_cookie
+readonly oj_data_dir="$(dirname "${oj_cookie}")"
+readonly repository_main="${repository_config_dir}/atcoder-cli/cpp/main.cpp"
+readonly configured_main="${template_dir}/main.cpp"
+readonly marker_file="${config_dir}/.managed-config.sha256"
+
+install -d -m 0755 \
+    "${template_dir}" \
+    "${oj_data_dir}" \
+    "${repository_config_dir}/atcoder-cli" \
+    "${repository_config_dir}/online-judge-tools"
+
+if [[ ! -f "${repository_main}" ]]; then
+    printf 'Repository template is missing: %s\n' "${repository_main}" >&2
+    exit 1
+fi
+
+source_hash="$({
+    sha256sum "${source_dir}/config.json"
+    sha256sum "${source_dir}/cpp/template.json"
+} | sha256sum | cut -d ' ' -f 1)"
+readonly source_hash
+
+installed_hash=""
+if [[ -r "${marker_file}" ]]; then
+    installed_hash="$(<"${marker_file}")"
+fi
+
+if [[ "${installed_hash}" != "${source_hash}" ]]; then
+    install -m 0644 "${source_dir}/config.json" "${config_dir}/config.json"
+    install -m 0644 "${source_dir}/cpp/template.json" "${template_dir}/template.json"
+    rm -f -- "${template_dir}/Makefile"
+    printf '%s\n' "${source_hash}" > "${marker_file}"
+fi
+
+# Replace only the unmodified template copy created by older images.
+if [[ -e "${configured_main}" && ! -L "${configured_main}" ]]; then
+    if cmp -s "${configured_main}" "${source_dir}/cpp/main.cpp" || \
+        cmp -s "${configured_main}" "${repository_main}"; then
+        rm -f -- "${configured_main}"
+    else
+        printf 'Refusing to replace an edited template: %s\n' "${configured_main}" >&2
+        exit 1
+    fi
+fi
+ln -sfnT "${repository_main}" "${configured_main}"
+
+# Resolve the installed OJ executable for this container.
+acc config oj-path "$(command -v oj)" >/dev/null
+
+link_config() {
+    local target_file="$1"
+    local link_file="$2"
+
+    if [[ -e "${link_file}" && ! -L "${link_file}" ]]; then
+        printf 'Refusing to replace a regular file: %s\n' "${link_file}" >&2
+        exit 1
+    fi
+    ln -sfnT "${target_file}" "${link_file}"
+}
+
+link_config \
+    "${config_dir}/session.json" \
+    "${repository_config_dir}/atcoder-cli/session.json"
+link_config \
+    "${oj_cookie}" \
+    "${repository_config_dir}/online-judge-tools/cookie.jar"

@@ -1,0 +1,149 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "build & test",
+      "detail": "ビルド&テスト",
+      "type": "process",
+      "command": "bash",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "dedicated",
+        "clear": true,
+        "close": false,
+        "showReuseMessage": false
+      },
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "args": [
+        "-c",
+        "g++ -std=gnu++23 -O2 -Wall -Wextra \"$1\" -o a.out && oj test -c ./a.out -t 2",
+        "--",
+        "${file}"
+      ]
+    },
+    {
+      "label": "build for debug",
+      "detail": "デバッグ用ビルド",
+      "hide": true,
+      "type": "process",
+      "command": "g++",
+      "group": "build",
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "args": [
+        "-std=gnu++23",
+        "-g",
+        "-O0",
+        "-Wall",
+        "-Wextra",
+        "${file}",
+        "-o",
+        "a.out"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      }
+    },
+    {
+      "label": "Download from AtCoder",
+      "detail": "AtCoderから問題をダウンロード",
+      "type": "process",
+      "command": "atcoder-workflow",
+      "args": [
+        "download",
+        "${input:Contest}",
+        "${workspaceFolder}"
+      ],
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "group": "build"
+    },
+    {
+      "label": "Download from yukicoder",
+      "detail": "yukicoderから問題をダウンロード",
+      "type": "process",
+      "command": "bash",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "group": "build",
+      "args": [
+        "-c",
+        "[[ \"$1\" =~ ^[0-9]+$ ]] || { echo \"Enter a numeric yukicoder problem ID.\" >&2; exit 1; }; target=\"$2/yukicoder/$1\"; mkdir -p \"$target\" && cd \"$target\" && { test -e main.cpp || cp -- \"$(acc config-dir)/cpp/main.cpp\" main.cpp; } && oj download \"https://yukicoder.me/problems/no/$1\" && code --reuse-window \"$target/main.cpp\"",
+        "--",
+        "${input:yukicoder problem}",
+        "${workspaceFolder}"
+      ]
+    },
+    {
+      "label": "submit to AtCoder (C++)",
+      "detail": "AtCoderの問題へ(C++)で提出します",
+      "type": "process",
+      "command": "atcoder-workflow",
+      "args": [
+        "submit",
+        "${file}"
+      ],
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "submit to yukicoder (C++)",
+      "detail": "yukicoderへ(C++)で提出します",
+      "type": "process",
+      "command": "bash",
+      "presentation": {
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      },
+      "problemMatcher": [],
+      "args": [
+        "-c",
+        "problem=\"$(basename \"$PWD\")\"; [[ \"$problem\" =~ ^[0-9]+$ ]] || { echo \"Open a solution in yukicoder/<problem ID>/.\" >&2; exit 1; }; oj submit \"https://yukicoder.me/problems/no/$problem\" \"$1\"",
+        "--",
+        "${file}"
+      ],
+      "options": {
+        "cwd": "${fileDirname}"
+      }
+    }
+  ],
+  "inputs": [
+    {
+      "id": "Contest",
+      "description": "AtCoderのコンテストIDまたはURLを入力してください",
+      "default": "",
+      "type": "promptString"
+    },
+    {
+      "id": "yukicoder problem",
+      "description": "yukicoderの問題番号を入力してください",
+      "default": "",
+      "type": "promptString"
+    }
+  ]
+}

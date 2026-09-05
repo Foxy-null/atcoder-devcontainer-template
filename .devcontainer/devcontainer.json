@@ -1,0 +1,55 @@
+{
+  "name": "AtCoder on Arch Linux",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": "..",
+    "args": {
+      "USERNAME": "vscode",
+      "USER_UID": "1000",
+      "USER_GID": "1000",
+      "ATCODER_CLI_VERSION": "2.2.0",
+      "ONLINE_JUDGE_TOOLS_VERSION": "11.5.1",
+      "ACLOGIN_VERSION": "0.2.1",
+      "AC_LIBRARY_VERSION": "v1.6",
+      "AC_LIBRARY_COMMIT": "864245a00b00dd008d1abfdc239618fdb7d139da"
+    }
+  },
+  "remoteUser": "vscode",
+  "containerUser": "vscode",
+  "updateRemoteUserUID": true,
+  "init": true,
+  "mounts": [
+    "source=atcoder-${devcontainerId}-acc-config,target=/home/vscode/.config/atcoder-cli-nodejs,type=volume",
+    "source=atcoder-${devcontainerId}-oj-data,target=/home/vscode/.local/share/online-judge-tools,type=volume"
+  ],
+  "postCreateCommand": "setup-atcoder-user && verify-atcoder-toolchain",
+  "hostRequirements": {
+    "cpus": 2,
+    "memory": "4gb",
+    "storage": "16gb"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools"
+      ],
+      "settings": {
+        "C_Cpp.default.cppStandard": "c++23",
+        "C_Cpp.default.compilerPath": "/usr/bin/g++",
+        "[cpp]": {
+          "editor.defaultFormatter": "ms-vscode.cpptools"
+        },
+        "files.associations": {
+          "*.hpp": "cpp",
+          "source_location": "cpp",
+          "all": "cpp"
+        },
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+  "containerEnv": {
+    "ATCODER_REPOSITORY_CONFIG_DIR": "${containerWorkspaceFolder}/config"
+  }
+}

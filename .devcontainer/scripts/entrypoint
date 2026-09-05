@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+setup-atcoder-user
+
+if (( $# == 0 )); then
+    set -- sleep infinity
+fi
+
+exec "$@"
