@@ -35,7 +35,7 @@ docker compose exec atcoder bash
 コンテナ内で初回ログインと問題取得を行います。
 
 ```bash
-login-atcoder-if-needed
+aclogin
 atcoder-workflow download practice "$PWD"
 ```
 

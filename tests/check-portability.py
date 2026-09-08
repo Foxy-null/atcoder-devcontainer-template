@@ -1,0 +1,113 @@
+"""Run from the repository root with Python 3 and Bash; no network calls."""
+import json
+import os
+from pathlib import Path
+import shutil
+import subprocess
+import tempfile
+
+ROOT = Path(__file__).resolve().parents[1]
+BASH = os.environ.get("BASH_FOR_TESTS") or shutil.which("bash")
+assert BASH, "Bash is required (WSL, Git Bash, or the dev container)."
+
+def run(args, **kwargs):
+    return subprocess.run(args, check=True, text=True, encoding="utf-8", capture_output=True, **kwargs)
+
+def read_json(relative):
+    return json.loads((ROOT / relative).read_text(encoding="utf-8"))
+
+for file in ROOT.rglob("*.json"):
+    if ".git" not in file.parts:
+        json.loads(file.read_text(encoding="utf-8"))
+
+dev = read_json(".devcontainer/devcontainer.json")
+assert dev["containerEnv"]["ATCODER_REPOSITORY_CONFIG_DIR"] == "${containerWorkspaceFolder}/config"
+assert all("${devcontainerId}" in mount for mount in dev["mounts"])
+assert "workbench.colorTheme" not in dev["customizations"]["vscode"]["settings"]
+assert read_json(".vscode/c_cpp_properties.json")["configurations"][0]["cppStandard"] == "c++23"
+for directory in (".devcontainer", ".vscode", "config"):
+    for file in (ROOT / directory).rglob("*"):
+        if file.is_file():
+            content = file.read_text(encoding="utf-8")
+            assert "/home/foxy_null" not in content, file
+            assert "/workspaces/AtCoder" not in content, file
+            assert "uninstall-extension" not in content, file
+
+for script in (ROOT / ".devcontainer/scripts").iterdir():
+    assert b"\r" not in script.read_bytes(), script
+    run([BASH, "-n", str(script)])
+run([BASH, str(ROOT / ".devcontainer/scripts/atcoder-workflow"), "self-test"])
+tasks = {task["label"]: task for task in read_json(".vscode/tasks.json")["tasks"]}
+for task in tasks.values():
+    if task["command"] == "bash":
+        run([BASH, "-n", "-c", task["args"][1]])
+
+with tempfile.TemporaryDirectory(prefix="atcoder portability ") as temp:
+    work = Path(temp)
+    repo = work / "another user's repository"
+    repo.mkdir()
+    log = work / "arguments"
+    acc_config = work / "another user's config"
+    (acc_config / "cpp").mkdir(parents=True)
+    (acc_config / "cpp/main.cpp").write_text("template\n", encoding="utf-8")
+    mock = work / "mock-tools.sh"
+    mock.write_text(
+        'g++() { printf "%s\\0" "$@" > "$CHECK_LOG"; }\n'
+        'oj() { printf "%s\\0" "$@" > "$OJ_LOG"; }\n'
+        'code() { :; }\n'
+        'acc() { printf "%s\\n" "$ACC_TEST_CONFIG"; }\n',
+        encoding="utf-8", newline="\n"
+    )
+    env = {
+        **os.environ, "BASH_ENV": mock.as_posix(),
+        "CHECK_LOG": log.as_posix(), "OJ_LOG": (work / "oj-arguments").as_posix(),
+        "ACC_TEST_CONFIG": acc_config.as_posix(),
+        "MSYS_NO_PATHCONV": "1",
+    }
+
+    def task_run(label, substitutions, cwd=repo, check=True):
+        task = tasks[label]
+        assert task["type"] == "process"
+        args = [substitutions.get(arg, arg) for arg in task["args"]]
+        command = BASH if task["command"] == "bash" else task["command"]
+        result = subprocess.run([command, *args], cwd=cwd, env=env, text=True,
+                                encoding="utf-8", capture_output=True)
+        if check:
+            assert result.returncode == 0, result.stderr
+        return result
+
+    solution = repo / "source $(touch INJECTED).cpp"
+    solution.write_text("int main() {}\n", encoding="utf-8")
+    task_run("build & test", {"${file}": solution.as_posix()})
+    arguments = log.read_bytes().decode().split("\0")[:-1]
+    assert solution.as_posix() in arguments, arguments
+    assert "-std=gnu++23" in arguments, arguments
+    assert not (repo / "INJECTED").exists()
+    debug = tasks["build for debug"]
+    assert debug["type"] == "process" and debug["command"] == "g++"
+    assert "-std=gnu++23" in debug["args"]
+    assert debug["options"]["cwd"] == "${fileDirname}"
+
+    values = {"${input:yukicoder problem}": "3412", "${workspaceFolder}": repo.as_posix()}
+    task_run("Download from yukicoder", values)
+    downloaded = repo / "yukicoder/3412/main.cpp"
+    assert downloaded.read_text() == "template\n"
+    downloaded.write_text("my edited solution\n", encoding="utf-8")
+    task_run("Download from yukicoder", values)
+    assert downloaded.read_text() == "my edited solution\n"
+    values["${input:yukicoder problem}"] = "../escape; touch INJECTED"
+    failed = task_run("Download from yukicoder", values, check=False)
+    assert failed.returncode != 0
+    assert not (repo / "INJECTED").exists()
+
+    task_run("submit to yukicoder (C++)", {"${file}": downloaded.as_posix()},
+             cwd=downloaded.parent)
+    oj_args = (work / "oj-arguments").read_bytes().decode().split("\0")[:-1]
+    assert oj_args == ["submit", "https://yukicoder.me/problems/no/3412", downloaded.as_posix()]
+
+dockerignore = (ROOT / ".dockerignore").read_text()
+assert "**/session.json" in dockerignore and "**/cookie.jar" in dockerignore
+dockerfile = (ROOT / ".devcontainer/Dockerfile").read_text()
+assert "COPY config/atcoder-cli /" not in dockerfile
+assert "vscode-extensions" not in dockerfile
+print("Portability checks passed (mocked tools; container build not tested).")

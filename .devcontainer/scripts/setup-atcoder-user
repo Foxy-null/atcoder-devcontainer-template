@@ -18,7 +18,10 @@ readonly marker_file="${config_dir}/.managed-config.sha256"
 
 install -d -m 0755 \
     "${template_dir}" \
-    "${oj_data_dir}" \
+    "${oj_data_dir}"
+
+# Host-mounted directories may not support changing Unix permissions.
+mkdir -p \
     "${repository_config_dir}/atcoder-cli" \
     "${repository_config_dir}/online-judge-tools"
 

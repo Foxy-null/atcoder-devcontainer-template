@@ -66,7 +66,6 @@ RUN git clone --depth 1 --branch "${AC_LIBRARY_VERSION}" \
     && rm -rf /tmp/ac-library
 
 COPY .devcontainer/scripts/setup-atcoder-user /usr/local/bin/setup-atcoder-user
-COPY .devcontainer/scripts/login-atcoder-if-needed /usr/local/bin/login-atcoder-if-needed
 COPY .devcontainer/scripts/atcoder-workflow /usr/local/bin/atcoder-workflow
 COPY .devcontainer/scripts/verify-atcoder-toolchain /usr/local/bin/verify-atcoder-toolchain
 COPY .devcontainer/scripts/entrypoint /usr/local/bin/atcoder-entrypoint
@@ -75,7 +74,6 @@ COPY config/atcoder-cli/cpp/main.cpp config/atcoder-cli/cpp/template.json /usr/l
 
 RUN chmod 0755 \
         /usr/local/bin/setup-atcoder-user \
-        /usr/local/bin/login-atcoder-if-needed \
         /usr/local/bin/atcoder-workflow \
         /usr/local/bin/verify-atcoder-toolchain \
         /usr/local/bin/atcoder-entrypoint \

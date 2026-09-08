@@ -43,7 +43,7 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
 **コンテナ内のターミナル**で実行します。
 
 ```bash
-login-atcoder-if-needed
+aclogin
 ```
 
 ブラウザでAtCoderにログインし、開発者ツールの **Application（FirefoxではStorage）→ Cookies → https://atcoder.jp → REVEL_SESSION** の値をコピーして、プロンプトに貼り付けます。
