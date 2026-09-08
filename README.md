@@ -54,6 +54,13 @@ aclogin
 
 **F1 → Tasks: Run Task（タスク: タスクの実行）** でタスクを選びます。
 
+> [!Tip]
+> **Tasks: Run Task（タスク: タスクの実行）**にキーバインドを設定するとアクセスしやすくなります（以下は一例）
+> <img width="530" height="88" alt="Screenshot 2026-09-09 003913" src="https://github.com/user-attachments/assets/8a47ba6f-c29d-48ac-9fbc-3c533a25c1a9" />
+
+
+
+
 | やりたいこと | 操作 |
 | --- | --- |
 | AtCoderの問題を取得 | `Download from AtCoder` → コンテストID（例：`practice`）またはURLを入力し、問題を選択 |
