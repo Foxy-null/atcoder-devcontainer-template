@@ -6,7 +6,7 @@
 
 ## タスク一覧のショートカット
 
-F1から **Preferences: Open Keyboard Shortcuts (JSON)** を開き、既存の配列に次の項目を追加します。
+`Ctrl+Shift+V` によるタスク一覧の表示は、このテンプレートでは自動設定されません。キー割り当てはVS Codeのユーザー設定です。ブラウザ版Codespacesでローカルの設定が同期されていない場合は、**Codespaces側で** F1から **Preferences: Open Keyboard Shortcuts (JSON)** を開き、既存の配列に次の項目を追加して保存します。
 
 ```json
 {
@@ -16,6 +16,8 @@ F1から **Preferences: Open Keyboard Shortcuts (JSON)** を開き、既存の�
 ```
 
 この設定を追加すると、同じキーの既存の割り当てより優先される場合があります。既存設定全体を上書きせず、好きなキーを指定してください。
+
+ローカルと同じキー割り当てを使う場合は、[Settings SyncをCodespacesで有効にする](https://docs.github.com/en/codespaces/setting-your-user-preferences/personalizing-github-codespaces-for-your-account)方法もあります。コンテナの再ビルドは不要です。
 
 ## Docker Composeだけで起動する
 
