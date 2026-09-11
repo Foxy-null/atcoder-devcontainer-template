@@ -2,7 +2,9 @@
 
 AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取得ツールをコンテナにまとめ、Windows＋WSL2とGitHub Codespacesで使えます。
 
-**C++23 / GCC / GDB / AtCoder Library / atcoder-cli / online-judge-tools / aclogin** を収録しています。設定ファイル内のユーザー名・保存先・リポジトリ名を書き換える必要はありません。
+**Ubuntu 24.04 / C++23 / GCC 15.2.0 / GDB / AtCoder向けの全12ライブラリ / atcoder-cli / online-judge-tools / aclogin** を収録しています。設定ファイル内のユーザー名・保存先・リポジトリ名を書き換える必要はありません。
+
+GCCとライブラリはAtCoderの公式一覧（2026年6月16日更新）に合わせて固定しています。初回はソースからの構築を含むため時間がかかります。メモリ8GB以上・空き容量32GB以上を用意してください。詳しいバージョンと構築条件は[メンテナンスガイド](docs/maintenance.md)にまとめています。
 
 ## 1. セットアップ・起動
 
@@ -26,7 +28,6 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
 
    # atcoder-workspaceディレクトリにクローン
    git clone https://github.com/<あなたのGitHubユーザー名>/<作成したリポジトリ名>.git atcoder-workspace
-   
    cd atcoder-workspace
    code .
    ```
@@ -118,6 +119,8 @@ aclogin
 - AtCoderの問題は `atcoder/<カテゴリ>/<コンテストID>/<問題>/`、yukicoderの問題は `yukicoder/<問題番号>/` に保存されます。AtCoderの問題URLを入力した場合も、コンテストから取得する問題を選びます。
 - C++の雛形は [`config/atcoder-cli/cpp/main.cpp`](config/atcoder-cli/cpp/main.cpp) を編集すると、次の問題取得から反映されます。
 - ACLは `#include <atcoder/all>` で利用できます。
+- Boostは `#include <boost/dynamic_bitset.hpp>` などで利用できます。ビルド・デバッグのタスクには、全ライブラリの参照先とリンク設定が含まれます。
+- ターミナルからビルドするときは `atcoder-g++ main.cpp -o a.out` を使います。デバッグ用は `atcoder-g++ -g -O0 main.cpp -o a.out` です。
 
 > [!NOTE]
 > AtCoderの問題は、ダウンロード時に次の **10カテゴリ**へ自動で振り分けられます。
@@ -136,7 +139,9 @@ aclogin
 - **環境を更新したい**：F1から `Dev Containers: Rebuild Container` または `Codespaces: Rebuild Container` を実行します。
 - **テーマ・キー割り当て・Composeでの起動**：任意設定をまとめた[補足ガイド](docs/options.md)を参照してください。
 
-Arch LinuxのOSパッケージは再ビルド時に更新されます。固定しているツールのバージョンと検証手順は[メンテナンスガイド](docs/maintenance.md)を参照してください。
+`#include` エラーが出る場合は、まずVS Codeをコンテナ内で開いていることを確認してください。古いコンテナを使用している場合は再ビルドし、`verify-atcoder-toolchain` を実行します。コンテナにヘッダーがない状態では、`includePath` を増やすだけでは直りません。
+
+固定しているツールのバージョンと検証手順は[メンテナンスガイド](docs/maintenance.md)を参照してください。
 
 ## ライセンス
 

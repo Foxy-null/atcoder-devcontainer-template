@@ -3,10 +3,26 @@
     {
       "name": "Linux",
       "includePath": [
-        "${workspaceFolder}/**"
+        "${workspaceFolder}/**",
+        "/opt/atcoder/gcc/include",
+        "/opt/atcoder/gcc/include/torch/csrc/api/include"
       ],
-      "defines": [],
-      "compilerPath": "/usr/bin/g++",
+      "defines": [
+        "ATCODER",
+        "ONLINE_JUDGE",
+        "NOMINMAX",
+        "OR_PROTO_DLL=",
+        "PROTOBUF_USE_DLLS",
+        "USE_BOP",
+        "USE_CBC",
+        "USE_CLP",
+        "USE_GLOP",
+        "USE_LP_PARSER",
+        "USE_MATH_OPT",
+        "USE_PDLP",
+        "USE_SCIP"
+      ],
+      "compilerPath": "/opt/atcoder/gcc/bin/g++",
       "cStandard": "c17",
       "cppStandard": "c++23",
       "intelliSenseMode": "linux-gcc-x64"
