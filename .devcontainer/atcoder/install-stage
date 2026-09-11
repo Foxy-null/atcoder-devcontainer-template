@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+export AC_INSTALL_DIR=/opt/atcoder/gcc
+export AC_TEMP_DIR=/tmp/atcoder/gcc
+export AC_NO_GENERATE_CACHES=true
+export CMAKE_BUILD_PARALLEL_LEVEL="${BUILD_JOBS:-2}"
+for component in COMPILER abseil ac_library boost eigen gmp immer libtorch light_gbm or_tools range_v3 unordered_dense z3; do
+    export "AC_NO_BUILD_${component}=true"
+done
+for component in "$@"; do
+    [[ "$component" != compiler ]] || component=COMPILER
+    variable="AC_NO_BUILD_${component}"
+    [[ -v "$variable" ]] || { echo "Unknown component: $component" >&2; exit 1; }
+    export "${variable}=false"
+done
+bash /tmp/install-atcoder.sh
+# Keep compiler objects in the BuildKit cache so interrupted builds can resume.
+if [[ "$*" != compiler ]]; then
+    rm -rf /tmp/atcoder/gcc
+fi

@@ -3,6 +3,8 @@
 !.devcontainer/Dockerfile
 !.devcontainer/scripts/
 !.devcontainer/scripts/**
+!.devcontainer/atcoder/
+!.devcontainer/atcoder/**
 !config/
 !config/atcoder-cli/
 !config/atcoder-cli/config.json

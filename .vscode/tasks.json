@@ -27,7 +27,7 @@
       },
       "args": [
         "-c",
-        "g++ -std=gnu++23 -O2 -Wall -Wextra \"$1\" -o a.out && oj test -c ./a.out -t 2",
+        "atcoder-g++ \"$1\" -o a.out && oj test -c ./a.out -t 2",
         "--",
         "${file}"
       ]
@@ -37,17 +37,14 @@
       "detail": "デバッグ用ビルド",
       "hide": true,
       "type": "process",
-      "command": "g++",
+      "command": "atcoder-g++",
       "group": "build",
       "problemMatcher": [
         "$gcc"
       ],
       "args": [
-        "-std=gnu++23",
         "-g",
         "-O0",
-        "-Wall",
-        "-Wextra",
         "${file}",
         "-o",
         "a.out"

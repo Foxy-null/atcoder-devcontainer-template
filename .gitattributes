@@ -1,3 +1,6 @@
 * text=auto
 .devcontainer/scripts/* text eol=lf
 *.sh text eol=lf
+.devcontainer/atcoder/install-stage text eol=lf
+.devcontainer/atcoder/gcc.toml -text -diff
+.agents/skills/gh-pr-review/** -whitespace

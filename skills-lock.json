@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "skills": {
+    "critical-code-reviewer": {
+      "source": "posit-dev/skills",
+      "sourceType": "github",
+      "skillPath": "posit-dev/critical-code-reviewer/SKILL.md",
+      "computedHash": "3c45198ac0c3002eb964d02de022afb024ac395bff77547171eeea80d6e75a0d"
+    },
+    "gh-pr-review": {
+      "source": "agynio/gh-pr-review",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "6baaf36e3a03f9dafa9ecdbfff03235b536e7e93246c16b8e892ab2315130ac8"
+    }
+  }
+}

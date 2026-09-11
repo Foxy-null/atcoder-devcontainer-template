@@ -10,8 +10,6 @@ services:
         ATCODER_CLI_VERSION: 2.2.0
         ONLINE_JUDGE_TOOLS_VERSION: 11.5.1
         ACLOGIN_VERSION: 0.2.1
-        AC_LIBRARY_VERSION: v1.6
-        AC_LIBRARY_COMMIT: 864245a00b00dd008d1abfdc239618fdb7d139da
     init: true
     stdin_open: true
     tty: true

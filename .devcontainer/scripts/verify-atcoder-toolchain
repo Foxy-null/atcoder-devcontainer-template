@@ -4,15 +4,14 @@ set -euo pipefail
 readonly expected_acc_version=2.2.0
 readonly expected_oj_version=11.5.1
 readonly expected_aclogin_version=0.2.1
-readonly expected_ac_library_version=v1.6
+readonly expected_gcc_version=15.2.0
 readonly repository_config_dir="${ATCODER_REPOSITORY_CONFIG_DIR:-/workspace/config}"
 readonly repository_template="${repository_config_dir}/atcoder-cli/cpp/main.cpp"
-readonly ac_library_header=/usr/local/include/atcoder/all
-readonly ac_library_version_file=/usr/local/share/ac-library/VERSION
+readonly ac_library_header=/opt/atcoder/gcc/include/atcoder/all
 readonly oj_python="${PIPX_HOME:-/opt/pipx}/venvs/online-judge-tools/bin/python"
 readonly aclogin_python="${PIPX_HOME:-/opt/pipx}/venvs/aclogin/bin/python"
 
-for command_name in acc oj aclogin atcoder-workflow g++ make git jq node; do
+for command_name in acc oj aclogin atcoder-workflow atcoder-g++ g++ make git jq node; do
     command -v "${command_name}" >/dev/null
 done
 
@@ -32,10 +31,10 @@ if [[ ! -r "${ac_library_header}" ]]; then
     exit 1
 fi
 
-actual_ac_library_version="$(<"${ac_library_version_file}")"
-if [[ "${actual_ac_library_version}" != "${expected_ac_library_version}" ]]; then
-    printf 'Unexpected AtCoder Library version: expected %s, got %s\n' \
-        "${expected_ac_library_version}" "${actual_ac_library_version}" >&2
+actual_gcc_version="$(g++ -dumpfullversion -dumpversion)"
+if [[ "${actual_gcc_version}" != "${expected_gcc_version}" ]]; then
+    printf 'Unexpected GCC version: expected %s, got %s\n' \
+        "${expected_gcc_version}" "${actual_gcc_version}" >&2
     exit 1
 fi
 
@@ -70,12 +69,16 @@ build_dir="$(mktemp -d)"
 readonly build_dir
 trap 'rm -rf -- "${build_dir}"' EXIT
 
-g++ -std=gnu++23 -O2 -Wall -Wextra \
+atcoder-g++ \
     "${configured_template}" -o "${build_dir}/main"
 
-printf 'AtCoder toolchain OK: acc %s, oj %s, aclogin %s, ACL %s, GCC %s\n' \
+for check in check-libraries check-torch; do
+    atcoder-g++ "/usr/local/share/atcoder-recipe/${check}.cpp" -o "${build_dir}/${check}"
+    "${build_dir}/${check}"
+done
+
+printf 'AtCoder toolchain OK: acc %s, oj %s, aclogin %s, GCC %s, 12 libraries\n' \
     "${actual_acc_version}" \
     "${actual_oj_version}" \
     "${actual_aclogin_version}" \
-    "${actual_ac_library_version}" \
-    "$(g++ -dumpfullversion -dumpversion)"
+    "${actual_gcc_version}"

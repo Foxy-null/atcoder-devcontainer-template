@@ -5,6 +5,7 @@ from pathlib import Path
 import shutil
 import subprocess
 import tempfile
+import tomllib
 
 ROOT = Path(__file__).resolve().parents[1]
 BASH = os.environ.get("BASH_FOR_TESTS") or shutil.which("bash")
@@ -17,7 +18,7 @@ def read_json(relative):
     return json.loads((ROOT / relative).read_text(encoding="utf-8"))
 
 for file in ROOT.rglob("*.json"):
-    if ".git" not in file.parts:
+    if ".git" not in file.parts and file.name != "session.json":
         json.loads(file.read_text(encoding="utf-8"))
 
 dev = read_json(".devcontainer/devcontainer.json")
@@ -25,9 +26,18 @@ assert dev["containerEnv"]["ATCODER_REPOSITORY_CONFIG_DIR"] == "${containerWorks
 assert all("${devcontainerId}" in mount for mount in dev["mounts"])
 assert "workbench.colorTheme" not in dev["customizations"]["vscode"]["settings"]
 assert read_json(".vscode/c_cpp_properties.json")["configurations"][0]["cppStandard"] == "c++23"
+cpp = read_json(".vscode/c_cpp_properties.json")["configurations"][0]
+settings = dev["customizations"]["vscode"]["settings"]
+for field in ("compilerPath", "includePath", "defines"):
+    assert cpp[field] == settings[f"C_Cpp.default.{field}"]
+assert cpp["compilerPath"] == "/opt/atcoder/gcc/bin/g++"
+recipe = tomllib.loads((ROOT / ".devcontainer/atcoder/gcc.toml").read_text(encoding="utf-8"))
+assert recipe["display"] == "C++23 (GCC 15.2.0)"
+assert "-flto" not in recipe["compile"]
+assert len([lib for lib in recipe["library"].values() if "version" in lib]) == 12
 for directory in (".devcontainer", ".vscode", "config"):
     for file in (ROOT / directory).rglob("*"):
-        if file.is_file():
+        if file.name not in ("session.json", "cookie.jar") and file.is_file():
             content = file.read_text(encoding="utf-8")
             assert "/home/foxy_null" not in content, file
             assert "/workspaces/AtCoder" not in content, file
@@ -52,7 +62,7 @@ with tempfile.TemporaryDirectory(prefix="atcoder portability ") as temp:
     (acc_config / "cpp/main.cpp").write_text("template\n", encoding="utf-8")
     mock = work / "mock-tools.sh"
     mock.write_text(
-        'g++() { printf "%s\\0" "$@" > "$CHECK_LOG"; }\n'
+        'atcoder-g++() { printf "%s\\0" "$@" > "$CHECK_LOG"; }\n'
         'oj() { printf "%s\\0" "$@" > "$OJ_LOG"; }\n'
         'code() { :; }\n'
         'acc() { printf "%s\\n" "$ACC_TEST_CONFIG"; }\n',
@@ -81,11 +91,11 @@ with tempfile.TemporaryDirectory(prefix="atcoder portability ") as temp:
     task_run("build & test", {"${file}": solution.as_posix()})
     arguments = log.read_bytes().decode().split("\0")[:-1]
     assert solution.as_posix() in arguments, arguments
-    assert "-std=gnu++23" in arguments, arguments
+    assert arguments == [solution.as_posix(), "-o", "a.out"], arguments
     assert not (repo / "INJECTED").exists()
     debug = tasks["build for debug"]
-    assert debug["type"] == "process" and debug["command"] == "g++"
-    assert "-std=gnu++23" in debug["args"]
+    assert debug["type"] == "process" and debug["command"] == "atcoder-g++"
+    assert "-g" in debug["args"] and "-O0" in debug["args"]
     assert debug["options"]["cwd"] == "${fileDirname}"
 
     values = {"${input:yukicoder problem}": "3412", "${workspaceFolder}": repo.as_posix()}
@@ -110,4 +120,7 @@ assert "**/session.json" in dockerignore and "**/cookie.jar" in dockerignore
 dockerfile = (ROOT / ".devcontainer/Dockerfile").read_text()
 assert "COPY config/atcoder-cli /" not in dockerfile
 assert "vscode-extensions" not in dockerfile
+install_stage = (ROOT / ".devcontainer/atcoder/install-stage").read_text()
+assert "for component in COMPILER " in install_stage
+assert "component=COMPILER" in install_stage
 print("Portability checks passed (mocked tools; container build not tested).")
