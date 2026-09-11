@@ -23,7 +23,10 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
    ```bash
    mkdir -p ~/projects
    cd ~/projects
+
+   # atcoder-workspaceディレクトリにクローン
    git clone https://github.com/<あなたのGitHubユーザー名>/<作成したリポジトリ名>.git atcoder-workspace
+   
    cd atcoder-workspace
    code .
    ```
