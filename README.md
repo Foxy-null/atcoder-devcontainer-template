@@ -2,9 +2,9 @@
 
 AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取得ツールをコンテナにまとめ、Windows＋WSL2とGitHub Codespacesで使えます。
 
-**C++23 / GCC / GDB / AtCoder Library / atcoder-cli / online-judge-tools** を収録。ユーザー名・保存先・リポジトリ名の書き換えは不要です。
+**C++23 / GCC / GDB / AtCoder Library / atcoder-cli / online-judge-tools / aclogin** を収録。ユーザー名・保存先・リポジトリ名の書き換えは不要です。
 
-## 1. セットアップ
+## 1. セットアップ・起動
 
 ### Windows＋WSL2
 
@@ -14,19 +14,28 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
 - [Docker Desktop](https://docs.docker.com/desktop/setup/install/windows-install/)：起動し、**Settings → Resources → WSL Integration** で使用するディストリビューションを有効化
 - Windows版[VS Code](https://code.visualstudio.com/)と、**WSL**・**Dev Containers** 拡張機能
 
-1. このテンプレートから自分用のリポジトリを作成します（**Use this template**、またはFork）。
-2. **WSLのターミナル**で以下を実行します。URLは作成した自分のリポジトリのものに置き換えてください。
+1. このテンプレートから自分用のリポジトリを作成（**Use this template**、またはFork）する。
+2. **WSLのターミナル**で以下を実行する。URLは作成した自分のリポジトリのものに置き換えること。
 
    ```bash
+   # ディレクトリを作成（任意）
    mkdir -p ~/projects
+
+   # 作成した（或いはクローン先の任意のディレクトリ）に移動
    cd ~/projects
-   git clone https://github.com/YOUR_NAME/YOUR_REPOSITORY.git atcoder-workspace
+
+   # 初回セットアップ時のみ実行
+   # 例では~/projects/atcoder-workspace/...にクローンされます
+   git clone https://github.com/<あなたのGitHubユーザー名>/<作成したリポジトリ名>.git atcoder-workspace
+   
    cd atcoder-workspace
+
+   # VS Codeを起動
    code .
    ```
-
-3. VS Codeで **F1 → Dev Containers: Reopen in Container** を実行します。
-4. 初回ビルドが終わり、セットアップログに **AtCoder toolchain OK** と表示されれば準備完了です。
+3. Docker desktopを起動する。
+4. VS Codeで **F1 → Dev Containers: Reopen in Container** を実行する。
+5. 初回ビルドが終わり、セットアップログに **AtCoder toolchain OK** と表示されれば準備完了です。
 
 保存先はWSL内の任意のフォルダーで構いません。導入の詳細は[VS Code公式ガイド](https://code.visualstudio.com/docs/devcontainers/containers)を参照してください。
 
