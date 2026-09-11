@@ -17,9 +17,12 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
 1. このテンプレートから自分用のリポジトリを作成（**Use this template**、またはFork）する。
 2. **WSLのターミナル**で以下を実行する。URLは作成した自分のリポジトリのものに置き換えること。
 > [!tip]
-> 下記では`projects`ディレクトリを作成していますが、保存先はWSL内の任意のフォルダーで構いません。導入の詳細は[VS Code公式ガイド](https://code.visualstudio.com/docs/devcontainers/containers)を参照してください。
+> 下記では初回セットアップ時に`~/projects/atcoder-workspace`ディレクトリにクローンしていますが、クローン先はWSL内の任意のディレクトリで構いません。導入の詳細は[VS Code公式ガイド](https://code.visualstudio.com/docs/devcontainers/containers)を参照してください。
+<details>
+  <summary>初回セットアップ（クリックで詳細を確認）</summary>
 
    ```bash
+   # 初回セットアップ時のみ実行
    # ディレクトリを作成（任意）
    mkdir -p ~/projects
 
@@ -35,6 +38,22 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
    # VS Codeを起動
    code .
    ```
+
+</details>
+
+<details>
+  <summary>セットアップ後に起動する方法（クリックで詳細を確認）</summary>
+
+   ```bash
+   # 初回でクローンしたディレクトリに移動
+   cd ~/projects/atcoder-workspace
+
+   # VS Codeを起動
+   code .
+   ```
+
+</details>
+
 3. Docker desktopを起動する。
 4. VS Codeで **F1 → Dev Containers: Reopen in Container** を実行する。
 5. 初回ビルドが終わり、セットアップログに **AtCoder toolchain OK** と表示されれば準備完了です。
