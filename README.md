@@ -55,7 +55,7 @@ Docker Desktopを起動し、WSLのターミナルで以下を実行します。
 
 1. このテンプレートから自分用のリポジトリを作成します（**Use this template** または **Fork**）。
 2. 自分のリポジトリで **Code → Codespaces → Create codespace** を選びます。
-3. 初回ビルドとセットアップが終わったら、ターミナルで `verify-atcoder-toolchain` を実行します。**AtCoder toolchain OK** が表示されれば準備完了です。
+3. 初回ビルドとセットアップが終わり、ターミナルに**Finished configuring codespace.**が表示されれば準備完了です。
 
 ローカルへのDocker・VS Codeのインストールは不要です。
 
