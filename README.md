@@ -19,7 +19,7 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
 > [!tip]
 > 下記では初回セットアップ時に`~/projects/atcoder-workspace`ディレクトリにクローンしていますが、クローン先はWSL内の任意のディレクトリで構いません。導入の詳細は[VS Code公式ガイド](https://code.visualstudio.com/docs/devcontainers/containers)を参照してください。
 <details>
-  <summary>初回セットアップ（クリックで詳細を確認）</summary>
+  <summary>初めて使う場合：クローンして起動（クリックで詳細を確認）</summary>
 
    ```bash
    # 初回セットアップ時のみ実行
@@ -42,7 +42,7 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
 </details>
 
 <details>
-  <summary>セットアップ後に起動する方法（クリックで詳細を確認）</summary>
+  <summary>2回目以降：既存環境を起動（クリックで詳細を確認）</summary>
 
    ```bash
    # 初回でクローンしたディレクトリに移動
@@ -68,15 +68,36 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
 
 ## 2. AtCoderにログイン
 
-**コンテナ内のターミナル**で実行します。
+**コンテナ内のターミナル**で以下のコマンドを実行
 
 ```bash
 aclogin
 ```
 
-ブラウザでAtCoderにログインし、開発者ツールの **Application（FirefoxではStorage）→ Cookies → https://atcoder.jp → REVEL_SESSION** の値をコピーして、プロンプトに貼り付けます。
+ブラウザで[AtCoder](https://atcoder.jp)にログインし、開発者ツールの **Application（FirefoxではStorage）→ Cookies → https://atcoder.jp → REVEL_SESSION** の値をコピーして、プロンプトに貼り付けます。
 
 この値はログイン情報です。共有・Gitへの追加はしないでください。認証情報はコンテナ用volumeへ保存され、通常の再ビルドでは保持されます。別のCodespaceや別の導入方法では再ログインが必要です。
+
+## 2.1 yukicoderにログイン
+
+1. **コンテナ内のターミナル**で以下のコマンドを実行
+
+```bash
+oj login https://yukicoder.me/
+```
+
+2. 画像のようなエラーが出たら`config/online-judge-tools/cookie.jar`を開いてください
+<details>
+  <summary>実際のエラー画像</summary>
+  <img width="776" height="287" alt="image" src="https://github.com/user-attachments/assets/46e7d726-dccc-4b73-b482-cb1c408423ee" />
+</details>
+
+3. ブラウザで[yukicoder](https://yukicoder.me)にログインし、開発者ツールの **Application（FirefoxではStorage）→ Cookies → https://yukicoder.me → REVEL_SESSION** の値をコピーし、`config/online-judge-tools/cookie.jar`内の以下の場所を探し、`<ここの文字列を置き換える形で貼り付け>`部分をコピーした値に置き換え
+
+```jar
+Set-Cookie3: REVEL_FLASH=""; path="/"; domain=yukicoder.me; path_spec; secure; discard; HttpOnly=None; SameSite=Lax; version=0
+Set-Cookie3: REVEL_SESSION=<ここの文字列を置き換える形で貼り付け>; path="/"; domain=yukicoder.me; path_spec; secure; expires="20xx-xx-xx xx:xx:xxx"; HttpOnly=None; SameSite=Lax; version=0
+```
 
 ## 3. 問題を解く
 
@@ -86,9 +107,6 @@ aclogin
 > **Tasks: Run Task（タスク: タスクの実行）**にキーバインドを設定するとアクセスしやすくなります（以下は一例）
 > <img width="530" height="88" alt="Screenshot 2026-09-09 003913" src="https://github.com/user-attachments/assets/8a47ba6f-c29d-48ac-9fbc-3c533a25c1a9" />
 
-
-
-
 | やりたいこと | 操作 |
 | --- | --- |
 | AtCoderの問題を取得 | `Download from AtCoder` → コンテストID（例：`practice`）またはURLを入力し、問題を選択 |
@@ -97,9 +115,19 @@ aclogin
 | デバッグ | `main.cpp`を開いて **F5**（Sample 1〜3は対応するサンプルがある問題で使用） |
 | 提出 | `main.cpp`を開いて `submit to AtCoder (C++)` または `submit to yukicoder (C++)` |
 
-AtCoderの問題は `atcoder/<カテゴリ>/<コンテストID>/<問題>/`、yukicoderの問題は `yukicoder/<問題番号>/` に保存されます。AtCoderの問題URLを入力した場合も、コンテストから取得する問題を選びます。
+- AtCoderの問題は `atcoder/<カテゴリ>/<コンテストID>/<問題>/`、yukicoderの問題は `yukicoder/<問題番号>/` に保存されます。AtCoderの問題URLを入力した場合も、コンテストから取得する問題を選びます。
 
-C++の雛形は [`config/atcoder-cli/cpp/main.cpp`](config/atcoder-cli/cpp/main.cpp) を編集すると、次の問題取得から反映されます。ACLは `#include <atcoder/all>` で利用できます。
+- C++の雛形は [`config/atcoder-cli/cpp/main.cpp`](config/atcoder-cli/cpp/main.cpp) を編集すると、次の問題取得から反映されます。
+- ACLは `#include <atcoder/all>` で利用できます。
+
+> [!NOTE]
+> AtCoderの問題は、ダウンロード時に次の **10カテゴリ**へ自動で振り分けられます。
+>
+> - **コンテスト別**：`ABC`・`ARC`・`AGC`・`AHC`・`ADT`・`PAST`・`JOI`・`AWC`
+> - **`TRAINING`**：練習・学習用（APG4b、ABS、競プロ典型90問、競技プログラミングの鉄則、DPまとめコンテストなど）
+> - **`OTHER`**：上記の分類に該当しないコンテスト
+>
+> <img width="446" alt="カテゴリ別の保存フォルダー例" src="https://github.com/user-attachments/assets/671b962e-564a-4d26-9443-a72499e64915" />
 
 ## 困ったとき・カスタマイズ
 
