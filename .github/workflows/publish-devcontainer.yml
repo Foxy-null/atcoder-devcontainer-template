@@ -25,10 +25,6 @@ on:
         required: false
         default: false
 
-concurrency:
-  group: devcontainer-image-${{ github.repository }}
-  cancel-in-progress: false
-
 permissions:
   contents: read
 
@@ -52,6 +48,9 @@ jobs:
     if: >-
       github.event_name != 'pull_request' &&
       github.repository == 'Foxy-null/atcoder-devcontainer-template'
+    concurrency:
+      group: devcontainer-image-${{ github.repository }}
+      cancel-in-progress: false
     runs-on: ubuntu-24.04
     timeout-minutes: 330
     permissions:
