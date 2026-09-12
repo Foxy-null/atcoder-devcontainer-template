@@ -2,6 +2,7 @@
 import json
 import os
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import tempfile
@@ -120,6 +121,15 @@ assert "**/session.json" in dockerignore and "**/cookie.jar" in dockerignore
 dockerfile = (ROOT / ".devcontainer/Dockerfile").read_text()
 assert "COPY config/atcoder-cli /" not in dockerfile
 assert "vscode-extensions" not in dockerfile
+workflow = (ROOT / ".github/workflows/publish-devcontainer.yml").read_text()
+action_refs = re.findall(r"^\s*uses:\s*\S+@(\S+)\s*$", workflow, re.MULTILINE)
+assert action_refs and all(re.fullmatch(r"[0-9a-f]{40}", ref) for ref in action_refs)
+assert "github.repository == 'Foxy-null/atcoder-devcontainer-template'" in workflow
+assert '"${IMAGE_NAME}:candidate"' in workflow
+assert '"${IMAGE_NAME}:stable"' in workflow
+assert "github.ref == 'refs/heads/main'" in workflow
+assert "--cpus=2" in workflow and "--memory=4g" in workflow
+assert "create-storage-record: false" in workflow
 install_stage = (ROOT / ".devcontainer/atcoder/install-stage").read_text()
 assert "for component in COMPILER " in install_stage
 assert "component=COMPILER" in install_stage

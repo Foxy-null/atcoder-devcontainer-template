@@ -1,0 +1,221 @@
+name: Publish dev container image
+
+on:
+  pull_request:
+    paths: &image_paths
+      - .devcontainer/Dockerfile
+      - .devcontainer/atcoder/**
+      - .devcontainer/scripts/**
+      - config/atcoder-cli/**
+      - tests/**
+      - .dockerignore
+      - .github/workflows/publish-devcontainer.yml
+  push:
+    branches:
+      - main
+      - feature/atcoder-cpp-libraries
+    paths: *image_paths
+  schedule:
+    - cron: "17 18 1 * *"
+  workflow_dispatch:
+    inputs:
+      full_rebuild:
+        description: Ignore the registry build cache
+        type: boolean
+        required: false
+        default: false
+
+concurrency:
+  group: devcontainer-image-${{ github.repository }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  IMAGE_NAME: ghcr.io/foxy-null/atcoder-devcontainer-template
+
+jobs:
+  validate:
+    name: Validate source configuration
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+      - name: Run portability checks
+        run: python3 tests/check-portability.py
+
+  publish:
+    name: Build, test, attest, and publish
+    needs: validate
+    if: >-
+      github.event_name != 'pull_request' &&
+      github.repository == 'Foxy-null/atcoder-devcontainer-template'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 330
+    permissions:
+      attestations: write
+      contents: read
+      id-token: write
+      packages: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+
+      - name: Reclaim runner disk space
+        run: |
+          set -Eeuo pipefail
+          sudo rm -rf \
+            /opt/ghc \
+            /opt/hostedtoolcache/CodeQL \
+            /usr/local/.ghcup \
+            /usr/local/lib/android \
+            /usr/share/dotnet
+          docker system prune --all --force --volumes
+          df -h /
+
+      - name: Log in to GitHub Container Registry
+        run: |
+          set -Eeuo pipefail
+          printf '%s' "${{ secrets.GITHUB_TOKEN }}" |
+            docker login ghcr.io --username "${{ github.actor }}" --password-stdin
+
+      - name: Create Buildx builder
+        run: |
+          set -Eeuo pipefail
+          docker buildx create \
+            --name atcoder-builder \
+            --driver docker-container \
+            --use
+          docker buildx inspect --bootstrap
+
+      - name: Build and publish candidate
+        id: build
+        env:
+          FULL_REBUILD: ${{ github.event_name == 'schedule' || inputs.full_rebuild == true }}
+        run: |
+          set -Eeuo pipefail
+          immutable_tag="${IMAGE_NAME}:sha-${GITHUB_SHA}-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          build_options=()
+          if [[ "${FULL_REBUILD}" == "true" ]]; then
+            build_options+=(--no-cache)
+          fi
+
+          started_at="$(date +%s)"
+          docker buildx build \
+            "${build_options[@]}" \
+            --builder atcoder-builder \
+            --cache-from "type=registry,ref=${IMAGE_NAME}:buildcache" \
+            --cache-to "type=registry,ref=${IMAGE_NAME}:buildcache,mode=max,image-manifest=true,oci-mediatypes=true" \
+            --file .devcontainer/Dockerfile \
+            --label "org.opencontainers.image.description=AtCoder C++ development container" \
+            --label "org.opencontainers.image.licenses=MIT" \
+            --label "org.opencontainers.image.revision=${GITHUB_SHA}" \
+            --label "org.opencontainers.image.source=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" \
+            --metadata-file build-metadata.json \
+            --platform linux/amd64 \
+            --provenance=false \
+            --push \
+            --tag "${IMAGE_NAME}:candidate" \
+            --tag "${immutable_tag}" \
+            .
+
+          digest="$(jq -er '."containerimage.digest"' build-metadata.json)"
+          elapsed="$(( $(date +%s) - started_at ))"
+          printf 'digest=%s\n' "${digest}" >> "${GITHUB_OUTPUT}"
+          printf 'immutable_tag=%s\n' "${immutable_tag}" >> "${GITHUB_OUTPUT}"
+          printf 'seconds=%s\n' "${elapsed}" >> "${GITHUB_OUTPUT}"
+
+      - name: Remove build cache from runner
+        if: always()
+        run: |
+          docker buildx rm atcoder-builder || true
+          docker system prune --all --force --volumes
+          df -h /
+
+      - name: Pull and inspect candidate
+        id: pull
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          set -Eeuo pipefail
+          docker buildx imagetools inspect --raw "${IMAGE_NAME}@${DIGEST}" > image-index.json
+          media_type="$(jq -r '.mediaType // ""' image-index.json)"
+          if [[ "${media_type}" == *image.index* || "${media_type}" == *manifest.list* ]]; then
+            platform_digest="$(jq -er '[.manifests[] | select(.platform.os == "linux" and .platform.architecture == "amd64")][0].digest' image-index.json)"
+            docker buildx imagetools inspect --raw "${IMAGE_NAME}@${platform_digest}" > image-manifest.json
+          else
+            cp image-index.json image-manifest.json
+          fi
+          compressed_bytes="$(jq -er '[.layers[].size] | add' image-manifest.json)"
+
+          started_at="$(date +%s)"
+          docker pull "${IMAGE_NAME}@${DIGEST}"
+          elapsed="$(( $(date +%s) - started_at ))"
+          uncompressed_bytes="$(docker image inspect "${IMAGE_NAME}@${DIGEST}" --format '{{.Size}}')"
+
+          printf 'compressed_bytes=%s\n' "${compressed_bytes}" >> "${GITHUB_OUTPUT}"
+          printf 'seconds=%s\n' "${elapsed}" >> "${GITHUB_OUTPUT}"
+          printf 'uncompressed_bytes=%s\n' "${uncompressed_bytes}" >> "${GITHUB_OUTPUT}"
+
+      - name: Test candidate with target resources
+        id: test
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          set -Eeuo pipefail
+          sudo chown -R 1000:1000 "${GITHUB_WORKSPACE}"
+          started_at="$(date +%s)"
+          docker run --rm \
+            --cpus=2 \
+            --memory=4g \
+            --env ATCODER_REPOSITORY_CONFIG_DIR=/workspace/config \
+            --volume "${GITHUB_WORKSPACE}:/workspace" \
+            "${IMAGE_NAME}@${DIGEST}" \
+            bash -lc 'cd /workspace && bash tests/check-container.sh'
+          printf 'seconds=%s\n' "$(( $(date +%s) - started_at ))" >> "${GITHUB_OUTPUT}"
+
+      - name: Attest candidate provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6
+        with:
+          subject-name: ${{ env.IMAGE_NAME }}
+          subject-digest: ${{ steps.build.outputs.digest }}
+          push-to-registry: true
+          create-storage-record: false
+
+      - name: Promote verified main image to stable
+        if: github.ref == 'refs/heads/main'
+        env:
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          set -Eeuo pipefail
+          docker buildx imagetools create \
+            --tag "${IMAGE_NAME}:stable" \
+            "${IMAGE_NAME}@${DIGEST}"
+
+      - name: Publish benchmark summary
+        env:
+          BUILD_SECONDS: ${{ steps.build.outputs.seconds }}
+          COMPRESSED_BYTES: ${{ steps.pull.outputs.compressed_bytes }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+          IMMUTABLE_TAG: ${{ steps.build.outputs.immutable_tag }}
+          PULL_SECONDS: ${{ steps.pull.outputs.seconds }}
+          TEST_SECONDS: ${{ steps.test.outputs.seconds }}
+          UNCOMPRESSED_BYTES: ${{ steps.pull.outputs.uncompressed_bytes }}
+        run: |
+          set -Eeuo pipefail
+          {
+            echo '## Dev container candidate'
+            echo
+            echo '| Measurement | Result |'
+            echo '| --- | ---: |'
+            printf '| Source build and push | %s s |\n' "${BUILD_SECONDS}"
+            printf '| Clean pull | %s s |\n' "${PULL_SECONDS}"
+            printf '| Container smoke test | %s s |\n' "${TEST_SECONDS}"
+            printf '| Compressed layers | %s |\n' "$(numfmt --to=iec-i --suffix=B "${COMPRESSED_BYTES}")"
+            printf '| Local Docker image | %s |\n' "$(numfmt --to=iec-i --suffix=B "${UNCOMPRESSED_BYTES}")"
+            echo
+            printf -- '- Digest: `%s`\n' "${DIGEST}"
+            printf -- '- Immutable tag: `%s`\n' "${IMMUTABLE_TAG}"
+          } >> "${GITHUB_STEP_SUMMARY}"

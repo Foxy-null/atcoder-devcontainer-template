@@ -35,6 +35,18 @@ Ubuntu 24.04のベースイメージをダイジェストで固定していま�
 
 初回の構築には時間がかかり、メモリ8GB以上・空き容量32GB以上が必要です。既定の並列数はGCCとOR-Toolsが4、その他のライブラリが2です。Dockerのビルド引数 `COMPILER_BUILD_JOBS`・`OR_TOOLS_BUILD_JOBS`・`BUILD_JOBS` で調整できます。GCCとOR-Toolsのコンパイル途中のデータもBuildKitキャッシュに保存します。工程ごとのDockerキャッシュにより、タスク設定や雛形の変更だけでGCCを再構築する必要はありません。
 
+`.devcontainer/Dockerfile` を配布イメージの正本として、GitHub Actionsが `linux/amd64` の候補イメージをGHCRへ発行します。候補は `ghcr.io/foxy-null/atcoder-devcontainer-template:candidate` と、同じ内容を指す上書きされない `sha-<commit>-<run>-<attempt>` タグです。候補を2 CPU・4GBメモリに制限してこのリポジトリのコンテナ検証を通し、来歴をattestationとして登録します。`main` 上で全検証に成功した場合だけ、同じダイジェストを `stable` に昇格します。
+
+現在は導入前の計測段階であり、Dev ContainersとDocker Composeの既定はまだソースビルドです。ローカルで正本から明示的に構築する場合は、リポジトリのルートで次を実行します。この場合は従来どおり、初回構築用にメモリ8GB以上を確保してください。
+
+```bash
+docker buildx build --load --platform linux/amd64 \
+  --file .devcontainer/Dockerfile \
+  --tag atcoder-devcontainer:source .
+```
+
+ワークフローは環境を変えるファイルのpush、手動実行、毎月2日3:17（日本時間）の完全再構築で動きます。PRとテンプレートから派生したリポジトリでは軽量な構成検証だけを行い、GHCRへの発行は元のテンプレートリポジトリに限定します。初期検証中だけ `feature/atcoder-cpp-libraries` ブランチのpushでも候補を発行します。
+
 Ubuntu配布サーバーに接続できない場合は、ビルド引数 `UBUNTU_MIRROR` にUbuntuのミラーURLを指定できます（例：`http://ftp.jaist.ac.jp/pub/Linux/ubuntu/`）。パッケージの署名検証は維持します。
 
 コンパイラとヘッダーは `/opt/atcoder/gcc` に配置します。`atcoder-g++` が公式レシピから生成したコンパイル・リンク設定を適用し、通常ビルド・デバッグ・環境検証で共用します。`-g -O0` を渡すとデバッグ向けに最適化を上書きできます。通常の `g++` は同じGCC 15.2.0ですが、外部ライブラリ用のオプションを自動追加しません。
