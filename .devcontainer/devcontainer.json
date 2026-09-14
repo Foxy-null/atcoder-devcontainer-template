@@ -1,17 +1,6 @@
 {
   "name": "AtCoder C++23 (Ubuntu 24.04 / GCC 15.2.0)",
-  "build": {
-    "dockerfile": "Dockerfile",
-    "context": "..",
-    "args": {
-      "USERNAME": "vscode",
-      "USER_UID": "1000",
-      "USER_GID": "1000",
-      "ATCODER_CLI_VERSION": "2.2.0",
-      "ONLINE_JUDGE_TOOLS_VERSION": "11.5.1",
-      "ACLOGIN_VERSION": "0.2.1"
-    }
-  },
+  "image": "ghcr.io/foxy-null/atcoder-devcontainer-template@sha256:ccac5442441df99b2b7ddf271c7e9a28142335a761e628777ca286fd634f6300",
   "remoteUser": "vscode",
   "containerUser": "vscode",
   "updateRemoteUserUID": true,
@@ -23,7 +12,7 @@
   "postCreateCommand": "setup-atcoder-user && verify-atcoder-toolchain",
   "hostRequirements": {
     "cpus": 2,
-    "memory": "8gb",
+    "memory": "4gb",
     "storage": "32gb"
   },
   "customizations": {

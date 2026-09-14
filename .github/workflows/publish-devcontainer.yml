@@ -4,6 +4,9 @@ on:
   pull_request:
     paths: &image_paths
       - .devcontainer/Dockerfile
+      - .devcontainer/Dockerfile.prebuilt
+      - .devcontainer/devcontainer.json
+      - compose.yaml
       - .devcontainer/atcoder/**
       - .devcontainer/scripts/**
       - config/atcoder-cli/**
@@ -13,7 +16,6 @@ on:
   push:
     branches:
       - main
-      - feature/atcoder-cpp-libraries
     paths: *image_paths
   schedule:
     - cron: "17 18 1 * *"

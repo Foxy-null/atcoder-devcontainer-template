@@ -2,14 +2,11 @@ services:
   atcoder:
     build:
       context: .
-      dockerfile: .devcontainer/Dockerfile
+      dockerfile: .devcontainer/Dockerfile.prebuilt
       args:
-        USERNAME: vscode
         USER_UID: ${LOCAL_UID:-1000}
         USER_GID: ${LOCAL_GID:-1000}
-        ATCODER_CLI_VERSION: 2.2.0
-        ONLINE_JUDGE_TOOLS_VERSION: 11.5.1
-        ACLOGIN_VERSION: 0.2.1
+    platform: linux/amd64
     init: true
     stdin_open: true
     tty: true

@@ -6,9 +6,17 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
 
 競技中に誤ってAI支援を使用することを防ぐため、VS CodeのAI機能をデフォルトで明示的に無効化しています。Dev Containerでは**GitHub Copilot**・**GitHub Copilot Chat**拡張機能を導入対象から除外し、ワークスペース設定でもCopilot Chat・インラインコード補完（Tab補完）・Next Edit Suggestionsを無効化しています。
 
-GCCとライブラリはAtCoderの公式一覧（2026年6月16日更新）に合わせて固定しています。初回はソースからの構築を含むため時間がかかります。メモリ8GB以上・空き容量32GB以上を用意してください。詳しいバージョンと構築条件は[メンテナンスガイド](docs/maintenance.md)にまとめています。
+GCCとライブラリはAtCoderの公式一覧（2026年6月16日更新）に合わせて固定しています。詳しいバージョンと構築条件は[メンテナンスガイド](docs/maintenance.md)を参照してください。
 
 ## 1. セットアップ・起動
+
+### システム要件
+
+- **対応環境**：x86-64（AMD64）のWindows＋WSL2、またはGitHub Codespaces。
+- **コンテナを実行する環境**：2 CPU・メモリ4GB・空き容量32GB以上。ローカルではDocker／WSL2側に確保してください。Windows本体のメモリは8GB以上を推奨します。
+- **初回起動**：GHCRからビルド済みイメージを取得します。GCCとライブラリのソース構築は不要ですが、取得時間は回線速度に左右されます。
+
+Dev Containers・Codespaces・Composeは同じ検証済みイメージをダイジェストで固定して使用します。Codespacesの2-coreマシンには8GB RAMが割り当てられます。ソースから環境を再構築する場合は、引き続きメモリ8GB以上が必要です。
 
 ### Windows＋WSL2
 
@@ -63,7 +71,7 @@ Docker Desktopを起動し、WSLのターミナルで以下を実行します。
 2. 自分のリポジトリで **Code → Codespaces → Create codespace** を選びます。
 3. 初回ビルドとセットアップが終わり、ターミナルに **Finished configuring codespace.** が表示されれば準備完了です。
 
-ローカルへのDocker・VS Codeのインストールは不要です。
+ローカルへのDocker・VS Codeのインストールは不要です。上記のCPU・メモリ・空き容量はCodespaces側に必要です。
 
 ## 2. ログイン
 
@@ -123,6 +131,7 @@ aclogin
 - ACLは `#include <atcoder/all>` で利用できます。
 - Boostは `#include <boost/dynamic_bitset.hpp>` などで利用できます。ビルド・デバッグのタスクには、全ライブラリの参照先とリンク設定が含まれます。
 - ターミナルからビルドするときは `atcoder-g++ main.cpp -o a.out` を使います。デバッグ用は `atcoder-g++ -g -O0 main.cpp -o a.out` です。
+- AtCoderの提出言語は **C++23 (GCC 15.2.0)** に対応しています。yukicoderでは利用可能なコンパイラ・ライブラリが異なる場合があります。
 
 > [!NOTE]
 > AtCoderの問題は、ダウンロード時に次の **10カテゴリ**へ自動で振り分けられます。
@@ -138,7 +147,7 @@ aclogin
 - **セットアップの確認**：コンテナ内で `verify-atcoder-toolchain` を実行します。
 - **Dockerへ接続できない**：Docker Desktopの起動状態とWSL Integrationを確認します。
 - **認証が切れた**：「[ログイン](#2-ログイン)」の該当サービスの手順に従って、ログイン情報を更新します。
-- **環境を更新したい**：F1から `Dev Containers: Rebuild Container` または `Codespaces: Rebuild Container` を実行します。
+- **環境を更新したい**：このテンプレートの変更を自分のリポジトリに取り込み、作業環境にも反映してから、F1で `Dev Containers: Rebuild Container` または `Codespaces: Rebuild Container` を実行します。Use this templateで作成したリポジトリには、元の変更は自動反映されません。
 - **テーマ・キー割り当て・Composeでの起動**：任意設定をまとめた[補足ガイド](docs/options.md)を参照してください。
 
 `#include` エラーが出る場合は、まずVS Codeをコンテナ内で開いていることを確認してください。古いコンテナを使用している場合は再ビルドし、`verify-atcoder-toolchain` を実行します。コンテナにヘッダーがない状態では、`includePath` を増やすだけでは直りません。
