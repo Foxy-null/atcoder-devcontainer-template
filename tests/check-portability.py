@@ -23,6 +23,10 @@ for file in ROOT.rglob("*.json"):
         json.loads(file.read_text(encoding="utf-8"))
 
 dev = read_json(".devcontainer/devcontainer.json")
+assert "build" not in dev
+assert re.fullmatch(r"ghcr\.io/foxy-null/atcoder-devcontainer-template@sha256:[0-9a-f]{64}", dev["image"])
+prebuilt = (ROOT / ".devcontainer/Dockerfile.prebuilt").read_text()
+assert prebuilt.splitlines()[0] == f'FROM {dev["image"]}', "Compose and Dev Containers must use the same image"
 assert dev["containerEnv"]["ATCODER_REPOSITORY_CONFIG_DIR"] == "${containerWorkspaceFolder}/config"
 assert all("${devcontainerId}" in mount for mount in dev["mounts"])
 assert "workbench.colorTheme" not in dev["customizations"]["vscode"]["settings"]

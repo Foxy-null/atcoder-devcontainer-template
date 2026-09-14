@@ -21,7 +21,7 @@
 | unordered_dense | 4.5.0 |
 | Z3 | 4.15.2 |
 
-CLIツールの更新時は `.devcontainer/Dockerfile`・`.devcontainer/devcontainer.json`・`compose.yaml`・`.devcontainer/scripts/verify-atcoder-toolchain` の値を揃えてください。
+CLIツールの更新時は `.devcontainer/Dockerfile` と `.devcontainer/scripts/verify-atcoder-toolchain` の値を揃えてください。新しいイメージの検証後、`.devcontainer/devcontainer.json` と `.devcontainer/Dockerfile.prebuilt` のダイジェストを同時に更新します。
 
 GCCとライブラリは、[公式一覧](https://img.atcoder.jp/file/language-update/2025-10/language-list.html)の2026年6月16日更新版を基準にしています。[公式GCCスクリプト](https://img.atcoder.jp/file/language-update/2025-10/017-23_gcc_14-2-0.toml)を `.devcontainer/atcoder/gcc.toml` に保存し、SHA-256で変更を検出します。スクリプトのライセンスはCC0-1.0です。ファイル名に14.2.0とありますが、内容は15.2.0です。
 
@@ -37,7 +37,9 @@ Ubuntu 24.04のベースイメージをダイジェストで固定していま�
 
 `.devcontainer/Dockerfile` を配布イメージの正本として、GitHub Actionsが `linux/amd64` の候補イメージをGHCRへ発行します。候補は `ghcr.io/foxy-null/atcoder-devcontainer-template:candidate` と、同じ内容を指す上書きされない `sha-<commit>-<run>-<attempt>` タグです。候補を2 CPU・4GBメモリに制限してこのリポジトリのコンテナ検証を通し、来歴をattestationとして登録します。`main` 上で全検証に成功した場合だけ、同じダイジェストを `stable` に昇格します。
 
-現在は導入前の計測段階であり、Dev ContainersとDocker Composeの既定はまだソースビルドです。ローカルで正本から明示的に構築する場合は、リポジトリのルートで次を実行します。この場合は従来どおり、初回構築用にメモリ8GB以上を確保してください。
+Dev Containers・Codespacesは検証済みイメージを直接使用します。Composeは `.devcontainer/Dockerfile.prebuilt` で同じイメージのUID/GIDだけを調整します。いずれもダイジェスト固定のため、`stable` の更新だけでは利用環境は変わりません。新しい配布版は検証後に両方の参照を更新してください。ロールバック時も両方を以前のダイジェストへ戻して再構築します。
+
+ローカルで正本から明示的に構築する場合は、リポジトリのルートで次を実行します。この場合は従来どおり、初回構築用にメモリ8GB以上を確保してください。
 
 ```bash
 docker buildx build --load --platform linux/amd64 \
@@ -45,7 +47,7 @@ docker buildx build --load --platform linux/amd64 \
   --tag atcoder-devcontainer:source .
 ```
 
-ワークフローは環境を変えるファイルのpush、手動実行、毎月2日3:17（日本時間）の完全再構築で動きます。PRとテンプレートから派生したリポジトリでは軽量な構成検証だけを行い、GHCRへの発行は元のテンプレートリポジトリに限定します。初期検証中だけ `feature/atcoder-cpp-libraries` ブランチのpushでも候補を発行します。
+ワークフローはmainへの環境を変えるファイルのpush、手動実行、毎月2日3:17（日本時間）の完全再構築で動きます。PRとテンプレートから派生したリポジトリでは軽量な構成検証だけを行い、GHCRへの発行は元のテンプレートリポジトリに限定します。
 
 Ubuntu配布サーバーに接続できない場合は、ビルド引数 `UBUNTU_MIRROR` にUbuntuのミラーURLを指定できます（例：`http://ftp.jaist.ac.jp/pub/Linux/ubuntu/`）。パッケージの署名検証は維持します。
 

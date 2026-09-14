@@ -1,0 +1,10 @@
+FROM ghcr.io/foxy-null/atcoder-devcontainer-template@sha256:ccac5442441df99b2b7ddf271c7e9a28142335a761e628777ca286fd634f6300
+
+# Compose does not perform Dev Containers' automatic UID/GID adjustment.
+USER root
+ARG USER_UID=1000
+ARG USER_GID=1000
+RUN if [ "$(id -g vscode)" != "${USER_GID}" ]; then groupmod --gid "${USER_GID}" vscode; fi \
+    && if [ "$(id -u vscode)" != "${USER_UID}" ]; then usermod --uid "${USER_UID}" vscode; fi \
+    && chown -R "${USER_UID}:${USER_GID}" /home/vscode
+USER vscode

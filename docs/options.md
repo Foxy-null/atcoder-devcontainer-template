@@ -32,7 +32,7 @@ docker compose exec atcoder verify-atcoder-toolchain
 docker compose exec atcoder bash
 ```
 
-`.env`が既にある場合は上書きせず、`LOCAL_UID`と`LOCAL_GID`だけ更新してください。VS Code Dev Containers経由ならこの設定は不要です。
+`.env`が既にある場合は上書きせず、`LOCAL_UID`と`LOCAL_GID`だけ更新してください。ビルド済みイメージ上でUID/GIDだけを調整するため、GCCの再構築は行いません。VS Code Dev Containers経由ならこの設定は不要です。既存の認証volumeを使う場合はUID/GIDを途中で変更しないでください。
 
 コンテナ内で初回ログインと問題取得を行います。
 
@@ -48,7 +48,7 @@ atcoder-workflow download practice "$PWD"
 ## 設定と認証情報の場所
 
 - C++雛形：`config/atcoder-cli/cpp/main.cpp`
-- ACC既定設定：`config/atcoder-cli/config.json`（変更後はコンテナを再ビルド）
+- ACC既定設定：`config/atcoder-cli/config.json`（変更後は配布イメージを発行し、参照ダイジェストを更新してコンテナを再構築）
 - ACC認証の保存先：コンテナ内で `acc config-dir` を実行して確認
 - OJ認証の通常の保存先：`/home/vscode/.local/share/online-judge-tools/cookie.jar`
 
