@@ -1,5 +1,5 @@
 {
-  "name": "AtCoder on Arch Linux",
+  "name": "AtCoder C++23 (Ubuntu 24.04 / GCC 15.2.0)",
   "build": {
     "dockerfile": "Dockerfile",
     "context": "..",
@@ -9,9 +9,7 @@
       "USER_GID": "1000",
       "ATCODER_CLI_VERSION": "2.2.0",
       "ONLINE_JUDGE_TOOLS_VERSION": "11.5.1",
-      "ACLOGIN_VERSION": "0.2.1",
-      "AC_LIBRARY_VERSION": "v1.6",
-      "AC_LIBRARY_COMMIT": "864245a00b00dd008d1abfdc239618fdb7d139da"
+      "ACLOGIN_VERSION": "0.2.1"
     }
   },
   "remoteUser": "vscode",
@@ -25,8 +23,8 @@
   "postCreateCommand": "setup-atcoder-user && verify-atcoder-toolchain",
   "hostRequirements": {
     "cpus": 2,
-    "memory": "4gb",
-    "storage": "16gb"
+    "memory": "8gb",
+    "storage": "32gb"
   },
   "customizations": {
     "vscode": {
@@ -36,7 +34,7 @@
       ],
       "settings": {
         "C_Cpp.default.cppStandard": "c++23",
-        "C_Cpp.default.compilerPath": "/usr/bin/g++",
+        "C_Cpp.default.compilerPath": "/opt/atcoder/gcc/bin/g++",
         "[cpp]": {
           "editor.defaultFormatter": "ms-vscode.cpptools"
         },
@@ -45,7 +43,27 @@
           "source_location": "cpp",
           "all": "cpp"
         },
-        "terminal.integrated.defaultProfile.linux": "bash"
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "C_Cpp.default.includePath": [
+          "${workspaceFolder}/**",
+          "/opt/atcoder/gcc/include",
+          "/opt/atcoder/gcc/include/torch/csrc/api/include"
+        ],
+        "C_Cpp.default.defines": [
+          "ATCODER",
+          "ONLINE_JUDGE",
+          "NOMINMAX",
+          "OR_PROTO_DLL=",
+          "PROTOBUF_USE_DLLS",
+          "USE_BOP",
+          "USE_CBC",
+          "USE_CLP",
+          "USE_GLOP",
+          "USE_LP_PARSER",
+          "USE_MATH_OPT",
+          "USE_PDLP",
+          "USE_SCIP"
+        ]
       }
     }
   },
