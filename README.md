@@ -4,7 +4,7 @@ AtCoder・yukicoder向けのC++開発環境です。コンパイラや問題取�
 
 **Ubuntu 24.04 / C++23 / GCC 15.2.0 / GDB / AtCoder向けの全12ライブラリ / atcoder-cli / online-judge-tools / aclogin** を収録しています。設定ファイル内のユーザー名・保存先・リポジトリ名を書き換える必要はありません。
 
-更に、うっかりでAI機能を使わないように、**Copilot Chat**と**AIによるTab補完**の両方をデフォルトで無効化しています。
+競技中に誤ってAI支援を使用することを防ぐため、VS CodeのAI機能をデフォルトで明示的に無効化しています。Dev Containerでは**GitHub Copilot**・**GitHub Copilot Chat**拡張機能を導入対象から除外し、ワークスペース設定でもCopilot Chat・インラインコード補完（Tab補完）・Next Edit Suggestionsを無効化しています。
 
 GCCとライブラリはAtCoderの公式一覧（2026年6月16日更新）に合わせて固定しています。初回はソースからの構築を含むため時間がかかります。メモリ8GB以上・空き容量32GB以上を用意してください。詳しいバージョンと構築条件は[メンテナンスガイド](docs/maintenance.md)にまとめています。
 
