@@ -1,5 +1,4 @@
 .env
-**/a.out
 **/.build/
 .devcontainer/local-state/
 **/cookie.jar
