@@ -26,6 +26,12 @@ dev = read_json(".devcontainer/devcontainer.json")
 assert dev["containerEnv"]["ATCODER_REPOSITORY_CONFIG_DIR"] == "${containerWorkspaceFolder}/config"
 assert all("${devcontainerId}" in mount for mount in dev["mounts"])
 assert "workbench.colorTheme" not in dev["customizations"]["vscode"]["settings"]
+extensions = dev["customizations"]["vscode"]["extensions"]
+assert "-GitHub.copilot" in extensions and "-GitHub.copilot-chat" in extensions
+vscode_settings = read_json(".vscode/settings.json")
+assert vscode_settings["chat.disableAIFeatures"] is True
+assert vscode_settings["github.copilot.enable"] == {"*": False}
+assert vscode_settings["github.copilot.nextEditSuggestions.enabled"] is False
 assert read_json(".vscode/c_cpp_properties.json")["configurations"][0]["cppStandard"] == "c++23"
 cpp = read_json(".vscode/c_cpp_properties.json")["configurations"][0]
 settings = dev["customizations"]["vscode"]["settings"]

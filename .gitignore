@@ -4,3 +4,4 @@
 .devcontainer/local-state/
 **/cookie.jar
 **/session.json
+.devcontainer/toolchain

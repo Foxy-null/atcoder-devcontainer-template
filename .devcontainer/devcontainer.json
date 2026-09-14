@@ -29,6 +29,8 @@
   "customizations": {
     "vscode": {
       "extensions": [
+        "-GitHub.copilot",
+        "-GitHub.copilot-chat",
         "ms-vscode.cpptools",
         "ms-vscode.cmake-tools"
       ],
