@@ -128,6 +128,7 @@ aclogin
 
 - AtCoderの問題は `atcoder/<カテゴリ>/<コンテストID>/<問題>/`、yukicoderの問題は `yukicoder/<問題番号>/` に保存されます。AtCoderの問題URLを入力した場合も、コンテストから取得する問題を選びます。
 - C++の雛形は [`config/atcoder-cli/cpp/main.cpp`](config/atcoder-cli/cpp/main.cpp) を編集すると、次の問題取得から反映されます。
+  問題ごとの `main.cpp` は独立したコピーです。以前の環境で解答が他の問題にも反映される場合は、[既存の解答リンクの修復](docs/options.md#既存の解答リンクの修復)を行ってください。
 - ACLは `#include <atcoder/all>` で利用できます。
 - Boostは `#include <boost/dynamic_bitset.hpp>` などで利用できます。ビルド・デバッグのタスクには、全ライブラリの参照先とリンク設定が含まれます。
 - ターミナルからビルドするときは `atcoder-g++ main.cpp -o a.out` を使います。デバッグ用は `atcoder-g++ -g -O0 main.cpp -o a.out` です。

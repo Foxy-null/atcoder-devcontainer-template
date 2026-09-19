@@ -5,6 +5,7 @@ setup-atcoder-user
 setup-atcoder-user
 verify-atcoder-toolchain
 python tests/check-portability.py
+python tests/check-template.py
 
 test_dir="$(mktemp -d -t atcoder-smoke.XXXXXX)"
 trap 'rm -rf -- "$test_dir"' EXIT

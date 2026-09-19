@@ -13,11 +13,11 @@ oj_cookie="$("${oj_python}" -c \
 readonly oj_cookie
 readonly oj_data_dir="$(dirname "${oj_cookie}")"
 readonly repository_main="${repository_config_dir}/atcoder-cli/cpp/main.cpp"
-readonly configured_main="${template_dir}/main.cpp"
+readonly repository_template_dir="${repository_config_dir}/atcoder-cli/cpp"
 readonly marker_file="${config_dir}/.managed-config.sha256"
 
 install -d -m 0755 \
-    "${template_dir}" \
+    "${config_dir}" \
     "${oj_data_dir}"
 
 # Host-mounted directories may not support changing Unix permissions.
@@ -25,14 +25,14 @@ mkdir -p \
     "${repository_config_dir}/atcoder-cli" \
     "${repository_config_dir}/online-judge-tools"
 
-if [[ ! -f "${repository_main}" ]]; then
-    printf 'Repository template is missing: %s\n' "${repository_main}" >&2
+if [[ ! -f "${repository_main}" || -L "${repository_main}" || \
+      ! -f "${repository_template_dir}/template.json" ]]; then
+    printf 'Repository template must contain a regular main.cpp and template.json: %s\n' "${repository_template_dir}" >&2
     exit 1
 fi
 
 source_hash="$({
     sha256sum "${source_dir}/config.json"
-    sha256sum "${source_dir}/cpp/template.json"
 } | sha256sum | cut -d ' ' -f 1)"
 readonly source_hash
 
@@ -43,22 +43,22 @@ fi
 
 if [[ "${installed_hash}" != "${source_hash}" ]]; then
     install -m 0644 "${source_dir}/config.json" "${config_dir}/config.json"
-    install -m 0644 "${source_dir}/cpp/template.json" "${template_dir}/template.json"
-    rm -f -- "${template_dir}/Makefile"
     printf '%s\n' "${source_hash}" > "${marker_file}"
 fi
 
-# Replace only the unmodified template copy created by older images.
-if [[ -e "${configured_main}" && ! -L "${configured_main}" ]]; then
-    if cmp -s "${configured_main}" "${source_dir}/cpp/main.cpp" || \
-        cmp -s "${configured_main}" "${repository_main}"; then
-        rm -f -- "${configured_main}"
-    else
-        printf 'Refusing to replace an edited template: %s\n' "${configured_main}" >&2
+# acc preserves file symlinks when copying programs. Link only the directory,
+# so main.cpp itself is a regular file and each answer becomes an independent copy.
+if [[ -L "${template_dir}" ]]; then
+    if [[ "$(readlink "${template_dir}")" != "${repository_template_dir}" ]]; then
+        printf 'Refusing to replace an unknown template directory link: %s\n' "${template_dir}" >&2
         exit 1
     fi
+elif [[ -e "${template_dir}" ]]; then
+    backup_dir="$(mktemp -d "${config_dir}/cpp.backup.XXXXXX")"
+    mv -- "${template_dir}" "${backup_dir}/cpp"
+    printf 'Previous template configuration preserved in: %s\n' "${backup_dir}/cpp"
 fi
-ln -sfnT "${repository_main}" "${configured_main}"
+ln -sfnT "${repository_template_dir}" "${template_dir}"
 
 # Resolve the installed OJ executable for this container.
 acc config oj-path "$(command -v oj)" >/dev/null
