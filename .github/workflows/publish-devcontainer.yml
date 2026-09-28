@@ -43,6 +43,10 @@ jobs:
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
       - name: Run portability checks
         run: python3 tests/check-portability.py
+      - name: Check template isolation and legacy migration with real acc
+        run: |
+          npm install --prefix "$RUNNER_TEMP/acc-test" --ignore-scripts --no-audit --no-fund atcoder-cli@2.2.0
+          PATH="$RUNNER_TEMP/acc-test/node_modules/.bin:$PATH" python3 tests/check-template.py
 
   publish:
     name: Build, test, attest, and publish

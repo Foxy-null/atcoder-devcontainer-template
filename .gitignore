@@ -4,3 +4,5 @@
 **/cookie.jar
 **/session.json
 .devcontainer/toolchain
+# Local snapshots made before detaching legacy solution links.
+.solution-link-backup-*/

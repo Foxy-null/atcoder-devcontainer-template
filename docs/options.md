@@ -48,8 +48,33 @@ atcoder-workflow download practice "$PWD"
 ## 設定と認証情報の場所
 
 - C++雛形：`config/atcoder-cli/cpp/main.cpp`
+- C++雛形の展開設定：`config/atcoder-cli/cpp/template.json`（変更は次回取得から反映）
 - ACC既定設定：`config/atcoder-cli/config.json`（変更後は配布イメージを発行し、参照ダイジェストを更新してコンテナを再構築）
 - ACC認証の保存先：コンテナ内で `acc config-dir` を実行して確認
 - OJ認証の通常の保存先：`/home/vscode/.local/share/online-judge-tools/cookie.jar`
 
 セットアップは認証情報の原本へのリンクを `config/atcoder-cli/session.json` と `config/online-judge-tools/cookie.jar` に作ります。ログイン前はリンク先のファイルがありません。認証ファイルと `.env` はGitとDockerビルドの対象外です。
+
+ACCの `cpp` ディレクトリはリポジトリの雛形ディレクトリを参照します。`main.cpp` 自体は通常ファイルにしてください。雛形の編集は新しく取得する問題だけに反映され、既存の解答は変更されません。旧設定は初期化時にACC設定領域の `cpp.backup.XXXXXX/cpp` に退避されます。以前その領域で独自編集した雛形・展開設定があれば、退避先と比較してリポジトリ側へ取り込んでください。
+
+## 既存の解答リンクの修復
+
+以前の配布版には、各問題の `main.cpp` が同じC++雛形へのリンクになる不具合がありました。修正版を取り込んでコンテナを再構築しても、取得済みの解答リンクは残ります。
+
+コンテナ内のリポジトリルートで、まず対象を確認します。
+
+```bash
+python3 .devcontainer/atcoder/migrate-solution-links.py "$PWD"
+```
+
+対象は `atcoder/` 配下で、このリポジトリのC++雛形を指す `main.cpp` です。通常ファイルと無関係なリンクは変更しません。`SKIP` と表示された未知のリンクや切れたリンクは個別確認が必要なため、コマンドは終了コード1を返します。
+
+解答の編集・問題取得を止め、**雛形の内容を戻す前に**次を実行します。
+
+```bash
+python3 .devcontainer/atcoder/migrate-solution-links.py "$PWD" --apply
+```
+
+現在の内容とリンク先情報を `.solution-link-backup-*/` に保存した後、対象を同じ内容の独立した通常ファイルに置き換えます。`SKIP` があっても他の対象は修復されます。再実行しても修復済みの通常ファイルは変更しません。バックアップはGitの対象外です。
+
+リンク共有で過去に上書きされた問題ごとの解答は、この処理では復元できません。Git・VS Codeのローカル履歴・AtCoderの提出履歴などから復旧してください。移動したリポジトリを指す切れたリンクも、自動で内容を推測せず個別に復旧してください。

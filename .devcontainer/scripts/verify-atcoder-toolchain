@@ -19,9 +19,10 @@ config_dir="$(acc config-dir)"
 readonly config_dir
 readonly configured_template="${config_dir}/cpp/main.cpp"
 
-if [[ ! -L "${configured_template}" ]] || \
-    [[ "$(readlink "${configured_template}")" != "${repository_template}" ]]; then
-    printf 'AtCoder template is not linked to the repository: %s\n' \
+if [[ ! -L "${config_dir}/cpp" ]] || \
+    [[ "$(readlink "${config_dir}/cpp")" != "$(dirname "${repository_template}")" ]] || \
+    [[ ! -f "${configured_template}" || -L "${configured_template}" ]]; then
+    printf 'AtCoder template must expose a regular main.cpp through its directory link: %s\n' \
         "${configured_template}" >&2
     exit 1
 fi
