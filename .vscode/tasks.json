@@ -27,7 +27,7 @@
       },
       "args": [
         "-c",
-        "atcoder-g++ \"$1\" -o a.out && oj test -c ./a.out -t 2",
+        "atcoder-g++ -fuse-ld=lld \"$1\" -o a.out && oj test -c ./a.out -t 2",
         "--",
         "${file}"
       ]
@@ -43,6 +43,7 @@
         "$gcc"
       ],
       "args": [
+        "-fuse-ld=lld",
         "-g",
         "-O0",
         "${file}",

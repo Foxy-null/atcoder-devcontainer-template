@@ -1,0 +1,3543 @@
+{
+  "environment": {
+    "fallback": true,
+    "platform": "Linux-6.8.0-1054-oracle-aarch64-with-glibc2.39",
+    "architecture": "aarch64",
+    "logical_cpus": 4,
+    "cpu_affinity": [
+      0,
+      1
+    ],
+    "compiler": {
+      "command": [
+        "/usr/bin/g++",
+        "--version"
+      ],
+      "exit_code": 0,
+      "output": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n"
+    },
+    "linker_bfd": {
+      "command": [
+        "/usr/bin/ld.bfd",
+        "--version"
+      ],
+      "exit_code": 0,
+      "output": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n"
+    },
+    "address_space_limit_bytes": [
+      4294967296,
+      4294967296
+    ],
+    "linker_lld": {
+      "unavailable": true
+    },
+    "oj": {
+      "command": [
+        "/home/ubuntu/.local/bin/oj",
+        "--version"
+      ],
+      "exit_code": 0,
+      "output": "online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n"
+    },
+    "compile_flags": [
+      "-DATCODER",
+      "-DNOMINMAX",
+      "-DONLINE_JUDGE",
+      "-DOR_PROTO_DLL=",
+      "-DPROTOBUF_USE_DLLS",
+      "-DUSE_BOP",
+      "-DUSE_CBC",
+      "-DUSE_CLP",
+      "-DUSE_GLOP",
+      "-DUSE_LP_PARSER",
+      "-DUSE_MATH_OPT",
+      "-DUSE_PDLP",
+      "-DUSE_SCIP",
+      "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+      "-O2",
+      "-Wall",
+      "-Wextra",
+      "-fconstexpr-depth=1024",
+      "-fconstexpr-loop-limit=524288",
+      "-fconstexpr-ops-limit=2097152",
+      "-ftrivial-auto-var-init=zero",
+      "-march=native",
+      "-pthread",
+      "-std=gnu++23",
+      "-Wl,--as-needed",
+      "-fopenmp"
+    ],
+    "link_flags": [],
+    "extra_library_count": 0,
+    "flags_sha256": null,
+    "cpuinfo_excerpt": "processor\t: 0\nBogoMIPS\t: 50.00\nFeatures\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp ssbs\nCPU implementer\t: 0x41\nCPU architecture: 8\nCPU variant\t: 0x3\nCPU part\t: 0xd0c\nCPU revision\t: 1\n\nprocessor\t: 1\nBogoMIPS\t: 50.00\nFeatures\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp ssbs\nCPU implementer\t: 0x41\nCPU architecture: 8\nCPU variant\t: 0x3\nCPU part\t: 0xd0c\nCPU revision\t: 1\n\nprocessor\t: 2\nBogoMIPS\t: 50.00\nFeatures\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp ssbs\nCPU implementer\t: 0x41\nCPU architecture: 8\nCPU variant\t: 0x3\nCPU part\t: 0xd0c\nCPU revision\t: 1\n\nprocessor\t: 3\nBogoMIPS\t: 50.00\nFeatures\t: fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm lrcpc dcpop asimddp ssbs\nCPU implementer\t: 0x41\nCPU architecture: 8\nCPU variant\t: 0x3\nCPU part\t: 0xd0c\nCPU revision\t: 1\n\n",
+    "cpu.max": null,
+    "memory.max": null
+  },
+  "notes": [
+    "Each case has one unreported warmup and then repeated wall-time samples.",
+    "Absolute times depend on CPU/storage/virtualization and source complexity.",
+    "The script runs synthetic local samples; this is not a user solution benchmark.",
+    "SUPPLEMENTAL FALLBACK: compiler/architecture differ from the pinned image.",
+    "Official external libraries/link search paths and -fmodules are absent.",
+    "Full-library linker performance and pinned GCC 15.2 behavior are NOT measured."
+  ],
+  "repeats": 3,
+  "sources": {
+    "template": "#include <atcoder/all>\n#include <bits/stdc++.h>\nusing namespace std;\n#define int long long\nvoid testcase() {}\nint32_t main() {\n  ios::sync_with_stdio(false);\n  cin.tie(0);\n  cout.tie(0);\n  testcase();\n  return 0;\n}\n",
+    "full": "#include <atcoder/all>\n#include <bits/stdc++.h>\nint main() {\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n  int n, q;\n  if (!(std::cin >> n >> q)) return 0;\n  atcoder::fenwick_tree<long long> fw(n);\n  for (int i = 0; i < n; ++i) {\n    long long a; std::cin >> a; fw.add(i, a);\n  }\n  for (int i = 0; i < q; ++i) {\n    int t, a; long long b;\n    std::cin >> t >> a >> b;\n    if (t == 0) fw.add(a, b);\n    else std::cout << fw.sum(a, static_cast<int>(b)) << '\\n';\n  }\n}\n",
+    "trimmed": "#include <iostream>\n#include <atcoder/fenwicktree>\nint main() {\n  std::ios::sync_with_stdio(false);\n  std::cin.tie(nullptr);\n  int n, q;\n  if (!(std::cin >> n >> q)) return 0;\n  atcoder::fenwick_tree<long long> fw(n);\n  for (int i = 0; i < n; ++i) {\n    long long a; std::cin >> a; fw.add(i, a);\n  }\n  for (int i = 0; i < q; ++i) {\n    int t, a; long long b;\n    std::cin >> t >> a >> b;\n    if (t == 0) fw.add(a, b);\n    else std::cout << fw.sum(a, static_cast<int>(b)) << '\\n';\n  }\n}\n"
+  },
+  "results": {
+    "template_full_O2": {
+      "warmup": {
+        "wall_s": 4.752586763352156,
+        "user_s": 4.483408,
+        "system_s": 0.26840299999999995,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "/tmp/atcoder-build-benchmark-coyiuri8/template.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 4.822530979290605,
+          "user_s": 4.5620009999999995,
+          "system_s": 0.259646,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/template.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 4.786068871617317,
+          "user_s": 4.554680000000001,
+          "system_s": 0.23059600000000002,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/template.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 4.786905152723193,
+          "user_s": 4.539721999999998,
+          "system_s": 0.24634,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/template.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 4.786905152723193
+    },
+    "answer_full_O2": {
+      "warmup": {
+        "wall_s": 4.8494026605039835,
+        "user_s": 4.6191710000000015,
+        "system_s": 0.229306,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 4.818310972303152,
+          "user_s": 4.547079,
+          "system_s": 0.270346,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 4.846378473564982,
+          "user_s": 4.601505000000003,
+          "system_s": 0.24395100000000003,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 4.851714363321662,
+          "user_s": 4.602635999999997,
+          "system_s": 0.24823800000000018,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 4.846378473564982
+    },
+    "answer_trimmed_header_O2": {
+      "warmup": {
+        "wall_s": 0.5840762667357922,
+        "user_s": 0.5246020000000016,
+        "system_s": 0.05894699999999986,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 0.5823889393359423,
+          "user_s": 0.5187859999999986,
+          "system_s": 0.06328900000000015,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 0.5758073944598436,
+          "user_s": 0.5074540000000027,
+          "system_s": 0.06805099999999964,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 0.5833351444453001,
+          "user_s": 0.5289269999999959,
+          "system_s": 0.05410900000000041,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 0.5823889393359423
+    },
+    "answer_full_O0": {
+      "warmup": {
+        "wall_s": 3.7184385918080807,
+        "user_s": 3.457957999999998,
+        "system_s": 0.2597649999999998,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "-O0",
+              "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 3.721173921599984,
+          "user_s": 3.4591920000000016,
+          "system_s": 0.2608769999999998,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-O0",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 3.70476065389812,
+          "user_s": 3.4335820000000012,
+          "system_s": 0.27048700000000014,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-O0",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 3.7751441560685635,
+          "user_s": 3.5215549999999993,
+          "system_s": 0.2528410000000001,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-O0",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 3.721173921599984
+    },
+    "answer_full_O1": {
+      "warmup": {
+        "wall_s": 4.200736301019788,
+        "user_s": 3.9407520000000034,
+        "system_s": 0.2591289999999997,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "-O1",
+              "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 4.169672980904579,
+          "user_s": 3.929361,
+          "system_s": 0.2394440000000002,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-O1",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 4.200786771252751,
+          "user_s": 3.9651910000000044,
+          "system_s": 0.2347410000000001,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-O1",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 4.203186772763729,
+          "user_s": 3.9629079999999988,
+          "system_s": 0.23945599999999967,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-O1",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 4.200786771252751
+    },
+    "compile_only_full_O2": {
+      "warmup": {
+        "wall_s": 4.7511524967849255,
+        "user_s": 4.545729999999992,
+        "system_s": 0.20407799999999998,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "-c",
+              "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 4.789102548733354,
+          "user_s": 4.556267000000005,
+          "system_s": 0.23198100000000021,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 4.773301087319851,
+          "user_s": 4.537638999999999,
+          "system_s": 0.23475999999999964,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 4.742505043745041,
+          "user_s": 4.5184229999999985,
+          "system_s": 0.2232460000000005,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 4.773301087319851
+    },
+    "compile_only_trimmed_header_O2": {
+      "warmup": {
+        "wall_s": 0.525837879627943,
+        "user_s": 0.4664369999999991,
+        "system_s": 0.05891700000000011,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "-c",
+              "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 0.5339451096951962,
+          "user_s": 0.481498000000002,
+          "system_s": 0.05211499999999969,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 0.5328302253037691,
+          "user_s": 0.47598499999999433,
+          "system_s": 0.05647100000000016,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 0.5332340691238642,
+          "user_s": 0.48208700000000704,
+          "system_s": 0.050828000000000095,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 0.5332340691238642
+    },
+    "link_only_full_BFD": {
+      "warmup": {
+        "wall_s": 0.059169020503759384,
+        "user_s": 0.04557599999999695,
+        "system_s": 0.011527999999999317,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "-fuse-ld=bfd",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer.o",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 0.05693521350622177,
+          "user_s": 0.0378690000000006,
+          "system_s": 0.01876300000000075,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-fuse-ld=bfd",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 0.05737477354705334,
+          "user_s": 0.039856000000000336,
+          "system_s": 0.017249999999999766,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-fuse-ld=bfd",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 0.05692425183951855,
+          "user_s": 0.042552999999998065,
+          "system_s": 0.014084999999999681,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-fuse-ld=bfd",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 0.05693521350622177
+    },
+    "link_only_ordinary_libraries_BFD": {
+      "warmup": {
+        "wall_s": 0.0576382540166378,
+        "user_s": 0.04754800000000614,
+        "system_s": 0.009629000000000332,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "-fuse-ld=bfd",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer.o",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 0.05713941343128681,
+          "user_s": 0.04323099999999158,
+          "system_s": 0.01361900000000027,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-fuse-ld=bfd",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 0.05606641061604023,
+          "user_s": 0.043975000000003206,
+          "system_s": 0.011802999999999564,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-fuse-ld=bfd",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 0.06387651897966862,
+          "user_s": 0.051662000000007424,
+          "system_s": 0.011942000000000341,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-fuse-ld=bfd",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 0.05713941343128681
+    },
+    "link_only_full_lld": {
+      "skipped": "ld.lld not installed"
+    },
+    "answer_full_ordinary_libraries_O2": {
+      "warmup": {
+        "wall_s": 4.8230146914720535,
+        "user_s": 4.568322999999992,
+        "system_s": 0.2541479999999998,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 4.834682565182447,
+          "user_s": 4.5931989999999985,
+          "system_s": 0.24019000000000013,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 4.834041479974985,
+          "user_s": 4.594435000000004,
+          "system_s": 0.23812999999999995,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 4.844032788649201,
+          "user_s": 4.567694000000003,
+          "system_s": 0.2725439999999999,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 4.834682565182447
+    },
+    "PCH_create_O2": {
+      "warmup": {
+        "wall_s": 6.533828306943178,
+        "user_s": 6.074258,
+        "system_s": 0.45859499999999986,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "-x",
+              "c++-header",
+              "-c",
+              "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp.gch"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 7.072482541203499,
+          "user_s": 6.199815999999998,
+          "system_s": 0.5717870000000005,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-x",
+                "c++-header",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp.gch"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 7.0369895957410336,
+          "user_s": 6.2095489999999955,
+          "system_s": 0.5477419999999995,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-x",
+                "c++-header",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp.gch"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 6.853003500029445,
+          "user_s": 6.001303000000007,
+          "system_s": 0.5503420000000006,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-x",
+                "c++-header",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp.gch"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 7.0369895957410336
+    },
+    "answer_PCH_O2": {
+      "warmup": {
+        "wall_s": 2.3955516163259745,
+        "user_s": 2.211197999999996,
+        "system_s": 0.1839019999999998,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "-include",
+              "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+              "-Werror=invalid-pch",
+              "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 2.4004556760191917,
+          "user_s": 2.2127049999999997,
+          "system_s": 0.18735999999999997,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-include",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-Werror=invalid-pch",
+                "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 2.4155110474675894,
+          "user_s": 2.244641999999999,
+          "system_s": 0.17003899999999916,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-include",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-Werror=invalid-pch",
+                "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 2.4396408554166555,
+          "user_s": 2.243973000000011,
+          "system_s": 0.19523200000000074,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-include",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-Werror=invalid-pch",
+                "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 2.4155110474675894
+    },
+    "compile_only_PCH_O2": {
+      "warmup": {
+        "wall_s": 2.379800634458661,
+        "user_s": 2.1874719999999854,
+        "system_s": 0.191751,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "-include",
+              "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+              "-Werror=invalid-pch",
+              "-c",
+              "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+            ],
+            "exit_code": 0,
+            "output": ""
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 2.3577317502349615,
+          "user_s": 2.215260999999998,
+          "system_s": 0.1419119999999996,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-include",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-Werror=invalid-pch",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 2.3754960168153048,
+          "user_s": 2.212919999999997,
+          "system_s": 0.1619440000000001,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-include",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-Werror=invalid-pch",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        },
+        {
+          "wall_s": 2.3366561885923147,
+          "user_s": 2.1867980000000102,
+          "system_s": 0.14902200000000043,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-include",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-Werror=invalid-pch",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+              ],
+              "exit_code": 0,
+              "output": ""
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 2.3577317502349615
+    },
+    "oj_startup_help": {
+      "warmup": {
+        "wall_s": 0.42867783084511757,
+        "user_s": 0.3951930000000061,
+        "system_s": 0.03298299999999976,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/home/ubuntu/.local/bin/oj",
+              "test",
+              "--help"
+            ],
+            "exit_code": 0,
+            "output": "usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY]\n               [-m {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}]\n               [-M {summary,all,diff,diff-all}] [-S] [-N] [-D] [-s] [-e ERROR]\n               [-t TLE] [--mle MLE] [-i] [--no-print-input] [-j N]\n               [--print-memory] [--gnu-time GNU_TIME] [--no-ignore-backup]\n               [--ignore-backup] [--judge-command JUDGE]\n               [test ...]\n\npositional arguments:\n  test                  paths of test cases. (if empty: globbed from --format)\n\noptions:\n  -h, --help            show this help message and exit\n  -c COMMAND, --command COMMAND\n                        your solution to be tested. (default: \"./a.out\")\n  -f FORMAT, --format FORMAT\n                        a format string to recognize the relationship of test cases. (default: \"%s.%e\")\n  -d DIRECTORY, --directory DIRECTORY\n                        a directory name for test cases (default: test/)\n  -m {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}, --compare-mode {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}\n                        mode to compare outputs. The default behavoir is exact-match to ensure that you always get AC on remote judge servers when you got AC on local tests for the same cases.  (default: crlf-insensitive-exact-match)\n  -M {summary,all,diff,diff-all}, --display-mode {summary,all,diff,diff-all}\n                        mode to display outputs  (default: summary)\n  -S, --ignore-spaces   ignore spaces to compare outputs, but doesn't ignore newlines  (equivalent to --compare-mode=ignore-spaces\n  -N, --ignore-spaces-and-newlines\n                        ignore spaces and newlines to compare outputs  (equivalent to --compare-mode=ignore-spaces-and-newlines\n  -D, --diff            display the diff  (equivalent to --display-mode=diff)\n  -s, --silent          don't report output and correct answer even if not AC  (for --mode all)\n  -e ERROR, --error ERROR\n                        check as floating point number: correct if its absolute or relative error doesn't exceed it\n  -t TLE, --tle TLE     set the time limit (in second) (default: inf)\n  --mle MLE             set the memory limit (in megabyte) (default: inf)\n  -i, --print-input     print input cases if not AC  (default)\n  --no-print-input\n  -j N, --jobs N        specifies the number of jobs to run simultaneously  (default: no parallelization)\n  --print-memory        print the amount of memory which your program used, even if it is small enough\n  --gnu-time GNU_TIME   used to measure memory consumption (default: \"time\" on Linux, \"gtime\" on mac)\n  --no-ignore-backup\n  --ignore-backup       ignore backup files and hidden files (i.e. files like \"*~\", \"\\#*\\#\" and \".*\") (default)\n  --judge-command JUDGE\n                        specify judge command instead of default diff judge. The given command (e.g. `./judge`) will be called as `$ ./judge input.txt actual-output.txt expected-output.txt` and should return the result with the exit code of its `main` function.\n\nformat string for --format:\n  %s                    name\n  %e                    extension: \"in\" or \"out\"\n  (both %s and %e are required.)\n\ntips:\n  There is a feature to use special judges. See https://github.com/online-judge-tools/oj/blob/master/docs/getting-started.md#test-for-problems-with-special-judge for details.\n\n  You can do similar things with shell\n    e.g. $ for f in test/*.in ; do echo $f ; ./a.out < $f | diff - ${f%.in}.out ; done\n"
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 0.4279322661459446,
+          "user_s": 0.38842800000000466,
+          "system_s": 0.03894299999999973,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "--help"
+              ],
+              "exit_code": 0,
+              "output": "usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY]\n               [-m {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}]\n               [-M {summary,all,diff,diff-all}] [-S] [-N] [-D] [-s] [-e ERROR]\n               [-t TLE] [--mle MLE] [-i] [--no-print-input] [-j N]\n               [--print-memory] [--gnu-time GNU_TIME] [--no-ignore-backup]\n               [--ignore-backup] [--judge-command JUDGE]\n               [test ...]\n\npositional arguments:\n  test                  paths of test cases. (if empty: globbed from --format)\n\noptions:\n  -h, --help            show this help message and exit\n  -c COMMAND, --command COMMAND\n                        your solution to be tested. (default: \"./a.out\")\n  -f FORMAT, --format FORMAT\n                        a format string to recognize the relationship of test cases. (default: \"%s.%e\")\n  -d DIRECTORY, --directory DIRECTORY\n                        a directory name for test cases (default: test/)\n  -m {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}, --compare-mode {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}\n                        mode to compare outputs. The default behavoir is exact-match to ensure that you always get AC on remote judge servers when you got AC on local tests for the same cases.  (default: crlf-insensitive-exact-match)\n  -M {summary,all,diff,diff-all}, --display-mode {summary,all,diff,diff-all}\n                        mode to display outputs  (default: summary)\n  -S, --ignore-spaces   ignore spaces to compare outputs, but doesn't ignore newlines  (equivalent to --compare-mode=ignore-spaces\n  -N, --ignore-spaces-and-newlines\n                        ignore spaces and newlines to compare outputs  (equivalent to --compare-mode=ignore-spaces-and-newlines\n  -D, --diff            display the diff  (equivalent to --display-mode=diff)\n  -s, --silent          don't report output and correct answer even if not AC  (for --mode all)\n  -e ERROR, --error ERROR\n                        check as floating point number: correct if its absolute or relative error doesn't exceed it\n  -t TLE, --tle TLE     set the time limit (in second) (default: inf)\n  --mle MLE             set the memory limit (in megabyte) (default: inf)\n  -i, --print-input     print input cases if not AC  (default)\n  --no-print-input\n  -j N, --jobs N        specifies the number of jobs to run simultaneously  (default: no parallelization)\n  --print-memory        print the amount of memory which your program used, even if it is small enough\n  --gnu-time GNU_TIME   used to measure memory consumption (default: \"time\" on Linux, \"gtime\" on mac)\n  --no-ignore-backup\n  --ignore-backup       ignore backup files and hidden files (i.e. files like \"*~\", \"\\#*\\#\" and \".*\") (default)\n  --judge-command JUDGE\n                        specify judge command instead of default diff judge. The given command (e.g. `./judge`) will be called as `$ ./judge input.txt actual-output.txt expected-output.txt` and should return the result with the exit code of its `main` function.\n\nformat string for --format:\n  %s                    name\n  %e                    extension: \"in\" or \"out\"\n  (both %s and %e are required.)\n\ntips:\n  There is a feature to use special judges. See https://github.com/online-judge-tools/oj/blob/master/docs/getting-started.md#test-for-problems-with-special-judge for details.\n\n  You can do similar things with shell\n    e.g. $ for f in test/*.in ; do echo $f ; ./a.out < $f | diff - ${f%.in}.out ; done\n"
+            }
+          ]
+        },
+        {
+          "wall_s": 0.4302431959658861,
+          "user_s": 0.3906340000000057,
+          "system_s": 0.0390119999999996,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "--help"
+              ],
+              "exit_code": 0,
+              "output": "usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY]\n               [-m {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}]\n               [-M {summary,all,diff,diff-all}] [-S] [-N] [-D] [-s] [-e ERROR]\n               [-t TLE] [--mle MLE] [-i] [--no-print-input] [-j N]\n               [--print-memory] [--gnu-time GNU_TIME] [--no-ignore-backup]\n               [--ignore-backup] [--judge-command JUDGE]\n               [test ...]\n\npositional arguments:\n  test                  paths of test cases. (if empty: globbed from --format)\n\noptions:\n  -h, --help            show this help message and exit\n  -c COMMAND, --command COMMAND\n                        your solution to be tested. (default: \"./a.out\")\n  -f FORMAT, --format FORMAT\n                        a format string to recognize the relationship of test cases. (default: \"%s.%e\")\n  -d DIRECTORY, --directory DIRECTORY\n                        a directory name for test cases (default: test/)\n  -m {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}, --compare-mode {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}\n                        mode to compare outputs. The default behavoir is exact-match to ensure that you always get AC on remote judge servers when you got AC on local tests for the same cases.  (default: crlf-insensitive-exact-match)\n  -M {summary,all,diff,diff-all}, --display-mode {summary,all,diff,diff-all}\n                        mode to display outputs  (default: summary)\n  -S, --ignore-spaces   ignore spaces to compare outputs, but doesn't ignore newlines  (equivalent to --compare-mode=ignore-spaces\n  -N, --ignore-spaces-and-newlines\n                        ignore spaces and newlines to compare outputs  (equivalent to --compare-mode=ignore-spaces-and-newlines\n  -D, --diff            display the diff  (equivalent to --display-mode=diff)\n  -s, --silent          don't report output and correct answer even if not AC  (for --mode all)\n  -e ERROR, --error ERROR\n                        check as floating point number: correct if its absolute or relative error doesn't exceed it\n  -t TLE, --tle TLE     set the time limit (in second) (default: inf)\n  --mle MLE             set the memory limit (in megabyte) (default: inf)\n  -i, --print-input     print input cases if not AC  (default)\n  --no-print-input\n  -j N, --jobs N        specifies the number of jobs to run simultaneously  (default: no parallelization)\n  --print-memory        print the amount of memory which your program used, even if it is small enough\n  --gnu-time GNU_TIME   used to measure memory consumption (default: \"time\" on Linux, \"gtime\" on mac)\n  --no-ignore-backup\n  --ignore-backup       ignore backup files and hidden files (i.e. files like \"*~\", \"\\#*\\#\" and \".*\") (default)\n  --judge-command JUDGE\n                        specify judge command instead of default diff judge. The given command (e.g. `./judge`) will be called as `$ ./judge input.txt actual-output.txt expected-output.txt` and should return the result with the exit code of its `main` function.\n\nformat string for --format:\n  %s                    name\n  %e                    extension: \"in\" or \"out\"\n  (both %s and %e are required.)\n\ntips:\n  There is a feature to use special judges. See https://github.com/online-judge-tools/oj/blob/master/docs/getting-started.md#test-for-problems-with-special-judge for details.\n\n  You can do similar things with shell\n    e.g. $ for f in test/*.in ; do echo $f ; ./a.out < $f | diff - ${f%.in}.out ; done\n"
+            }
+          ]
+        },
+        {
+          "wall_s": 0.426890904083848,
+          "user_s": 0.3814130000000091,
+          "system_s": 0.044931000000000054,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "--help"
+              ],
+              "exit_code": 0,
+              "output": "usage: oj test [-h] [-c COMMAND] [-f FORMAT] [-d DIRECTORY]\n               [-m {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}]\n               [-M {summary,all,diff,diff-all}] [-S] [-N] [-D] [-s] [-e ERROR]\n               [-t TLE] [--mle MLE] [-i] [--no-print-input] [-j N]\n               [--print-memory] [--gnu-time GNU_TIME] [--no-ignore-backup]\n               [--ignore-backup] [--judge-command JUDGE]\n               [test ...]\n\npositional arguments:\n  test                  paths of test cases. (if empty: globbed from --format)\n\noptions:\n  -h, --help            show this help message and exit\n  -c COMMAND, --command COMMAND\n                        your solution to be tested. (default: \"./a.out\")\n  -f FORMAT, --format FORMAT\n                        a format string to recognize the relationship of test cases. (default: \"%s.%e\")\n  -d DIRECTORY, --directory DIRECTORY\n                        a directory name for test cases (default: test/)\n  -m {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}, --compare-mode {exact-match,crlf-insensitive-exact-match,ignore-spaces,ignore-spaces-and-newlines}\n                        mode to compare outputs. The default behavoir is exact-match to ensure that you always get AC on remote judge servers when you got AC on local tests for the same cases.  (default: crlf-insensitive-exact-match)\n  -M {summary,all,diff,diff-all}, --display-mode {summary,all,diff,diff-all}\n                        mode to display outputs  (default: summary)\n  -S, --ignore-spaces   ignore spaces to compare outputs, but doesn't ignore newlines  (equivalent to --compare-mode=ignore-spaces\n  -N, --ignore-spaces-and-newlines\n                        ignore spaces and newlines to compare outputs  (equivalent to --compare-mode=ignore-spaces-and-newlines\n  -D, --diff            display the diff  (equivalent to --display-mode=diff)\n  -s, --silent          don't report output and correct answer even if not AC  (for --mode all)\n  -e ERROR, --error ERROR\n                        check as floating point number: correct if its absolute or relative error doesn't exceed it\n  -t TLE, --tle TLE     set the time limit (in second) (default: inf)\n  --mle MLE             set the memory limit (in megabyte) (default: inf)\n  -i, --print-input     print input cases if not AC  (default)\n  --no-print-input\n  -j N, --jobs N        specifies the number of jobs to run simultaneously  (default: no parallelization)\n  --print-memory        print the amount of memory which your program used, even if it is small enough\n  --gnu-time GNU_TIME   used to measure memory consumption (default: \"time\" on Linux, \"gtime\" on mac)\n  --no-ignore-backup\n  --ignore-backup       ignore backup files and hidden files (i.e. files like \"*~\", \"\\#*\\#\" and \".*\") (default)\n  --judge-command JUDGE\n                        specify judge command instead of default diff judge. The given command (e.g. `./judge`) will be called as `$ ./judge input.txt actual-output.txt expected-output.txt` and should return the result with the exit code of its `main` function.\n\nformat string for --format:\n  %s                    name\n  %e                    extension: \"in\" or \"out\"\n  (both %s and %e are required.)\n\ntips:\n  There is a feature to use special judges. See https://github.com/online-judge-tools/oj/blob/master/docs/getting-started.md#test-for-problems-with-special-judge for details.\n\n  You can do similar things with shell\n    e.g. $ for f in test/*.in ; do echo $f ; ./a.out < $f | diff - ${f%.in}.out ; done\n"
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 0.4279322661459446
+    },
+    "oj_test_three_samples": {
+      "warmup": {
+        "wall_s": 0.466266967356205,
+        "user_s": 0.38869499999998425,
+        "system_s": 0.07744399999999985,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/home/ubuntu/.local/bin/oj",
+              "test",
+              "-c",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+              "-t",
+              "2",
+              "-d",
+              "/tmp/atcoder-build-benchmark-coyiuri8/test"
+            ],
+            "exit_code": 0,
+            "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.005869 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.005034 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004883 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.005869 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 0.4647728428244591,
+          "user_s": 0.40224000000000615,
+          "system_s": 0.06310200000000066,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.005779 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.004961 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004891 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.005779 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        },
+        {
+          "wall_s": 0.47830433398485184,
+          "user_s": 0.39593099999999026,
+          "system_s": 0.0837690000000002,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.007164 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.005173 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.005017 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.007164 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        },
+        {
+          "wall_s": 0.47385239601135254,
+          "user_s": 0.40827200000001085,
+          "system_s": 0.06608499999999928,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.005651 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.004859 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004972 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.005651 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 0.47385239601135254
+    },
+    "build_and_test_full_O2": {
+      "warmup": {
+        "wall_s": 5.297740675508976,
+        "user_s": 4.938083000000006,
+        "system_s": 0.3567670000000014,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": [
+              "/home/ubuntu/.local/bin/oj",
+              "test",
+              "-c",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+              "-t",
+              "2",
+              "-d",
+              "/tmp/atcoder-build-benchmark-coyiuri8/test"
+            ],
+            "exit_code": 0,
+            "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.006020 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.004877 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004799 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.006020 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 5.363125475123525,
+          "user_s": 5.026824000000005,
+          "system_s": 0.33631600000000006,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            },
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.006226 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.005541 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.005853 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.006226 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-2)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        },
+        {
+          "wall_s": 5.37870504334569,
+          "user_s": 5.065181999999993,
+          "system_s": 0.31311299999999953,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            },
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.006126 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.005202 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.005098 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.006126 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        },
+        {
+          "wall_s": 5.294765327125788,
+          "user_s": 4.979113999999981,
+          "system_s": 0.31519600000000025,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            },
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.005917 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.004920 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004775 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.005917 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 5.363125475123525
+    },
+    "build_and_test_trimmed_header_O2": {
+      "warmup": {
+        "wall_s": 1.0606550443917513,
+        "user_s": 0.9137800000000027,
+        "system_s": 0.1470179999999992,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": [
+              "/home/ubuntu/.local/bin/oj",
+              "test",
+              "-c",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+              "-t",
+              "2",
+              "-d",
+              "/tmp/atcoder-build-benchmark-coyiuri8/test"
+            ],
+            "exit_code": 0,
+            "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.006087 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.005390 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.005164 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.006087 sec  (for sample-1)\n[INFO] max memory: 3.072000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 1.0491004437208176,
+          "user_s": 0.9126569999999958,
+          "system_s": 0.13638899999999943,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            },
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.005703 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.004833 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004670 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.005703 sec  (for sample-1)\n[INFO] max memory: 3.072000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        },
+        {
+          "wall_s": 1.0565290320664644,
+          "user_s": 0.9163450000000068,
+          "system_s": 0.13902200000000065,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            },
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.005735 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.004854 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004623 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.005735 sec  (for sample-1)\n[INFO] max memory: 3.072000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        },
+        {
+          "wall_s": 1.051519213244319,
+          "user_s": 0.9130870000000186,
+          "system_s": 0.13885400000000025,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "/tmp/atcoder-build-benchmark-coyiuri8/trimmed.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            },
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.005874 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.005067 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004901 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.005874 sec  (for sample-1)\n[INFO] max memory: 3.072000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 1.051519213244319
+    },
+    "build_and_test_PCH_O2": {
+      "warmup": {
+        "wall_s": 2.8580201789736748,
+        "user_s": 2.6015919999999824,
+        "system_s": 0.2566600000000001,
+        "exit_code": 0,
+        "outputs": [
+          {
+            "command": [
+              "/usr/bin/g++",
+              "-DATCODER",
+              "-DNOMINMAX",
+              "-DONLINE_JUDGE",
+              "-DOR_PROTO_DLL=",
+              "-DPROTOBUF_USE_DLLS",
+              "-DUSE_BOP",
+              "-DUSE_CBC",
+              "-DUSE_CLP",
+              "-DUSE_GLOP",
+              "-DUSE_LP_PARSER",
+              "-DUSE_MATH_OPT",
+              "-DUSE_PDLP",
+              "-DUSE_SCIP",
+              "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+              "-O2",
+              "-Wall",
+              "-Wextra",
+              "-fconstexpr-depth=1024",
+              "-fconstexpr-loop-limit=524288",
+              "-fconstexpr-ops-limit=2097152",
+              "-ftrivial-auto-var-init=zero",
+              "-march=native",
+              "-pthread",
+              "-std=gnu++23",
+              "-Wl,--as-needed",
+              "-fopenmp",
+              "-include",
+              "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+              "-Werror=invalid-pch",
+              "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+              "-o",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+            ],
+            "exit_code": 0,
+            "output": ""
+          },
+          {
+            "command": [
+              "/home/ubuntu/.local/bin/oj",
+              "test",
+              "-c",
+              "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+              "-t",
+              "2",
+              "-d",
+              "/tmp/atcoder-build-benchmark-coyiuri8/test"
+            ],
+            "exit_code": 0,
+            "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.006185 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.005144 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.005136 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.006185 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+          }
+        ]
+      },
+      "runs": [
+        {
+          "wall_s": 2.8864120431244373,
+          "user_s": 2.6128020000000163,
+          "system_s": 0.2734489999999994,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-include",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-Werror=invalid-pch",
+                "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            },
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.006010 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.005109 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004886 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.006010 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        },
+        {
+          "wall_s": 2.8804494589567184,
+          "user_s": 2.6315019999999834,
+          "system_s": 0.24920600000000093,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-include",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-Werror=invalid-pch",
+                "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            },
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.005953 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.005064 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004980 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.005953 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        },
+        {
+          "wall_s": 2.8836947083473206,
+          "user_s": 2.6320300000000145,
+          "system_s": 0.25154099999999957,
+          "exit_code": 0,
+          "outputs": [
+            {
+              "command": [
+                "/usr/bin/g++",
+                "-DATCODER",
+                "-DNOMINMAX",
+                "-DONLINE_JUDGE",
+                "-DOR_PROTO_DLL=",
+                "-DPROTOBUF_USE_DLLS",
+                "-DUSE_BOP",
+                "-DUSE_CBC",
+                "-DUSE_CLP",
+                "-DUSE_GLOP",
+                "-DUSE_LP_PARSER",
+                "-DUSE_MATH_OPT",
+                "-DUSE_PDLP",
+                "-DUSE_SCIP",
+                "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+                "-O2",
+                "-Wall",
+                "-Wextra",
+                "-fconstexpr-depth=1024",
+                "-fconstexpr-loop-limit=524288",
+                "-fconstexpr-ops-limit=2097152",
+                "-ftrivial-auto-var-init=zero",
+                "-march=native",
+                "-pthread",
+                "-std=gnu++23",
+                "-Wl,--as-needed",
+                "-fopenmp",
+                "-include",
+                "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+                "-Werror=invalid-pch",
+                "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+                "-o",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+              ],
+              "exit_code": 0,
+              "output": ""
+            },
+            {
+              "command": [
+                "/home/ubuntu/.local/bin/oj",
+                "test",
+                "-c",
+                "/tmp/atcoder-build-benchmark-coyiuri8/answer",
+                "-t",
+                "2",
+                "-d",
+                "/tmp/atcoder-build-benchmark-coyiuri8/test"
+              ],
+              "exit_code": 0,
+              "output": "[INFO] online-judge-tools 11.5.1 (+ online-judge-api-client 10.10.1)\n[INFO] 3 cases found\n\n[INFO] sample-1\n[INFO] time: 0.005919 sec\n[SUCCESS] AC\n\n[INFO] sample-2\n[INFO] time: 0.004978 sec\n[SUCCESS] AC\n\n[INFO] sample-3\n[INFO] time: 0.004930 sec\n[SUCCESS] AC\n\n[INFO] slowest: 0.005919 sec  (for sample-1)\n[INFO] max memory: 3.200000 MB  (for sample-1)\n[SUCCESS] test success: 3 cases\n"
+            }
+          ]
+        }
+      ],
+      "median_wall_s": 2.8836947083473206
+    }
+  },
+  "temporary_directory": "/tmp/atcoder-build-benchmark-coyiuri8",
+  "linker_object_setup": {
+    "wall_s": 4.767434488981962,
+    "user_s": 4.5330239999999975,
+    "system_s": 0.23350500000000007,
+    "exit_code": 0,
+    "outputs": [
+      {
+        "command": [
+          "/usr/bin/g++",
+          "-DATCODER",
+          "-DNOMINMAX",
+          "-DONLINE_JUDGE",
+          "-DOR_PROTO_DLL=",
+          "-DPROTOBUF_USE_DLLS",
+          "-DUSE_BOP",
+          "-DUSE_CBC",
+          "-DUSE_CLP",
+          "-DUSE_GLOP",
+          "-DUSE_LP_PARSER",
+          "-DUSE_MATH_OPT",
+          "-DUSE_PDLP",
+          "-DUSE_SCIP",
+          "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-fconstexpr-depth=1024",
+          "-fconstexpr-loop-limit=524288",
+          "-fconstexpr-ops-limit=2097152",
+          "-ftrivial-auto-var-init=zero",
+          "-march=native",
+          "-pthread",
+          "-std=gnu++23",
+          "-Wl,--as-needed",
+          "-fopenmp",
+          "-c",
+          "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+          "-o",
+          "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+        ],
+        "exit_code": 0,
+        "output": ""
+      }
+    ]
+  },
+  "PCH_verification": {
+    "wall_s": 2.329213520511985,
+    "user_s": 2.162113000000005,
+    "system_s": 0.16668999999999912,
+    "exit_code": 0,
+    "outputs": [
+      {
+        "command": [
+          "/usr/bin/g++",
+          "-DATCODER",
+          "-DNOMINMAX",
+          "-DONLINE_JUDGE",
+          "-DOR_PROTO_DLL=",
+          "-DPROTOBUF_USE_DLLS",
+          "-DUSE_BOP",
+          "-DUSE_CBC",
+          "-DUSE_CLP",
+          "-DUSE_GLOP",
+          "-DUSE_LP_PARSER",
+          "-DUSE_MATH_OPT",
+          "-DUSE_PDLP",
+          "-DUSE_SCIP",
+          "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-fconstexpr-depth=1024",
+          "-fconstexpr-loop-limit=524288",
+          "-fconstexpr-ops-limit=2097152",
+          "-ftrivial-auto-var-init=zero",
+          "-march=native",
+          "-pthread",
+          "-std=gnu++23",
+          "-Wl,--as-needed",
+          "-fopenmp",
+          "-include",
+          "/tmp/atcoder-build-benchmark-coyiuri8/common.hpp",
+          "-H",
+          "-Werror=invalid-pch",
+          "-c",
+          "/tmp/atcoder-build-benchmark-coyiuri8/pch-body.cpp",
+          "-o",
+          "/tmp/atcoder-build-benchmark-coyiuri8/answer.o"
+        ],
+        "exit_code": 0,
+        "output": "! /tmp/atcoder-build-benchmark-coyiuri8/common.hpp.gch\n"
+      }
+    ]
+  },
+  "oj_binary_setup": {
+    "wall_s": 4.8286188673228025,
+    "user_s": 4.575396999999981,
+    "system_s": 0.2526690000000009,
+    "exit_code": 0,
+    "outputs": [
+      {
+        "command": [
+          "/usr/bin/g++",
+          "-DATCODER",
+          "-DNOMINMAX",
+          "-DONLINE_JUDGE",
+          "-DOR_PROTO_DLL=",
+          "-DPROTOBUF_USE_DLLS",
+          "-DUSE_BOP",
+          "-DUSE_CBC",
+          "-DUSE_CLP",
+          "-DUSE_GLOP",
+          "-DUSE_LP_PARSER",
+          "-DUSE_MATH_OPT",
+          "-DUSE_PDLP",
+          "-DUSE_SCIP",
+          "-I/tmp/atcoder-build-benchmark-20261004/ac-library-1.6",
+          "-O2",
+          "-Wall",
+          "-Wextra",
+          "-fconstexpr-depth=1024",
+          "-fconstexpr-loop-limit=524288",
+          "-fconstexpr-ops-limit=2097152",
+          "-ftrivial-auto-var-init=zero",
+          "-march=native",
+          "-pthread",
+          "-std=gnu++23",
+          "-Wl,--as-needed",
+          "-fopenmp",
+          "/tmp/atcoder-build-benchmark-coyiuri8/full.cpp",
+          "-o",
+          "/tmp/atcoder-build-benchmark-coyiuri8/answer"
+        ],
+        "exit_code": 0,
+        "output": ""
+      }
+    ]
+  },
+  "PCH_file_size_bytes": 179605488,
+  "PCH_size_observation": "Observed by the parent agent while the final run temporary directory existed; recorded after run completion."
+}

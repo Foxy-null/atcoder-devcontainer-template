@@ -33,10 +33,15 @@ printf '3\n1 2 3\n' > test/sample-1.in
 printf '6\n' > test/sample-1.out
 printf '1\n-7\n' > test/sample-2.in
 printf '%s\n' '-7' > test/sample-2.out
-atcoder-g++ "solution file.cpp" -o a.out
+atcoder-g++ -fuse-ld=lld "solution file.cpp" -o a.out
+readelf --string-dump .comment a.out | grep -q 'Linker: .*LLD'
 oj test -c ./a.out -t 2
-atcoder-g++ -g -O0 "solution file.cpp" -o debug.out
+atcoder-g++ -fuse-ld=lld -g -O0 "solution file.cpp" -o debug.out
 gdb --batch -ex 'break main' -ex 'run < test/sample-1.in' -ex continue ./debug.out > gdb.log 2>&1
 grep -q 'Breakpoint 1' gdb.log
 grep -q 'exited normally' gdb.log
-printf 'Container smoke checks passed: setup, C++23, all 12 libraries, samples, GDB.\n'
+for check in check-libraries check-torch; do
+    atcoder-g++ -fuse-ld=lld "/usr/local/share/atcoder-recipe/${check}.cpp" -o "${check}"
+    "./${check}"
+done
+printf 'Container smoke checks passed: setup, C++23, all 12 libraries, samples, GDB, LLD.\n'

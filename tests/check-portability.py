@@ -73,7 +73,7 @@ with tempfile.TemporaryDirectory(prefix="atcoder portability ") as temp:
     (acc_config / "cpp/main.cpp").write_text("template\n", encoding="utf-8")
     mock = work / "mock-tools.sh"
     mock.write_text(
-        'atcoder-g++() { printf "%s\\0" "$@" > "$CHECK_LOG"; }\n'
+        'atcoder-g++() { printf "%s\\0" "$@" > "$CHECK_LOG"; return "${BUILD_TEST_EXIT:-0}"; }\n'
         'oj() { printf "%s\\0" "$@" > "$OJ_LOG"; }\n'
         'code() { :; }\n'
         'acc() { printf "%s\\n" "$ACC_TEST_CONFIG"; }\n',
@@ -102,11 +102,20 @@ with tempfile.TemporaryDirectory(prefix="atcoder portability ") as temp:
     task_run("build & test", {"${file}": solution.as_posix()})
     arguments = log.read_bytes().decode().split("\0")[:-1]
     assert solution.as_posix() in arguments, arguments
-    assert arguments == [solution.as_posix(), "-o", "a.out"], arguments
+    assert arguments == ["-fuse-ld=lld", solution.as_posix(), "-o", "a.out"], arguments
+    oj_args = (work / "oj-arguments").read_bytes().decode().split("\0")[:-1]
+    assert oj_args == ["test", "-c", "./a.out", "-t", "2"], oj_args
     assert not (repo / "INJECTED").exists()
+    (work / "oj-arguments").unlink()
+    env["BUILD_TEST_EXIT"] = "1"
+    failed = task_run("build & test", {"${file}": solution.as_posix()}, check=False)
+    assert failed.returncode != 0
+    assert not (work / "oj-arguments").exists(), "Tested a stale executable after a failed build"
+    env.pop("BUILD_TEST_EXIT")
     debug = tasks["build for debug"]
     assert debug["type"] == "process" and debug["command"] == "atcoder-g++"
     assert "-g" in debug["args"] and "-O0" in debug["args"]
+    assert "-fuse-ld=lld" in debug["args"]
     assert debug["options"]["cwd"] == "${fileDirname}"
 
     values = {"${input:yukicoder problem}": "3412", "${workspaceFolder}": repo.as_posix()}

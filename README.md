@@ -131,7 +131,7 @@ aclogin
   問題ごとの `main.cpp` は独立したコピーです。以前の環境で解答が他の問題にも反映される場合は、[既存の解答リンクの修復](docs/options.md#既存の解答リンクの修復)を行ってください。
 - ACLは `#include <atcoder/all>` で利用できます。
 - Boostは `#include <boost/dynamic_bitset.hpp>` などで利用できます。ビルド・デバッグのタスクには、全ライブラリの参照先とリンク設定が含まれます。
-- ターミナルからビルドするときは `atcoder-g++ main.cpp -o a.out` を使います。デバッグ用は `atcoder-g++ -g -O0 main.cpp -o a.out` です。
+- ターミナルからタスクと同じ設定でビルドするときは `atcoder-g++ -fuse-ld=lld main.cpp -o a.out` を使います。デバッグ用は `atcoder-g++ -fuse-ld=lld -g -O0 main.cpp -o a.out` です。
 - AtCoderの提出言語は **C++23 (GCC 15.2.0)** に対応しています。yukicoderでは利用可能なコンパイラ・ライブラリが異なる場合があります。
 
 > [!NOTE]

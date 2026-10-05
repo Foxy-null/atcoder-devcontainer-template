@@ -1,0 +1,46 @@
+{
+  "environment": "ARM / GCC 13.3 / LLVM LLD 18.1.3 / ACL 1.6 / 2 CPU affinity / RLIMIT_AS 4 GiB",
+  "limitation": "Supplemental native validation; pinned GCC 15.2 and 156 additional libraries are not available.",
+  "results": {
+    "build_and_test_BFD": {
+      "wall_s": [
+        5.294672643765807,
+        5.310970984399319,
+        5.365564860403538
+      ],
+      "median_wall_s": 5.310970984399319
+    },
+    "build_and_test_LLD": {
+      "wall_s": [
+        5.289358744397759,
+        5.256510864943266,
+        5.310759702697396
+      ],
+      "median_wall_s": 5.289358744397759
+    },
+    "link_only_BFD": {
+      "wall_s": [
+        0.0582312922924757,
+        0.05939941294491291,
+        0.057235369458794594
+      ],
+      "median_wall_s": 0.0582312922924757
+    },
+    "link_only_LLD": {
+      "wall_s": [
+        0.029662827029824257,
+        0.029595667496323586,
+        0.029190825298428535
+      ],
+      "median_wall_s": 0.029595667496323586
+    }
+  },
+  "checks": [
+    "current build & test task: three samples pass",
+    "LLD confirmed in ELF .comment",
+    "source path with shell substitution characters is literal",
+    "current debug task: GDB breakpoint and normal exit",
+    "BFD and LLD outputs match all three samples",
+    "failed compilation stops before sample testing"
+  ]
+}
